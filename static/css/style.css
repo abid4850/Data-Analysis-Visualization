@@ -1,0 +1,210 @@
+/* ================================
+   Custom Styles for DataViz Pro
+==================================*/
+
+/* Default Light Theme */
+body {
+    background-color: #f8f9fa;
+    color: #212529;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    transition: all 0.3s ease-in-out;
+}
+
+/* ===== Updated Navbar with Gradient Background ===== */
+.navbar {
+    background: linear-gradient(45deg, #4a90e2, #007bff, #00c6ff);
+    border: none;
+    box-shadow: 0 4px 15px rgba(0,123,255,0.3);
+    transition: background 0.5s ease;
+}
+
+.navbar-brand {
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: #fff !important;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+    transition: color 0.3s ease;
+}
+
+.navbar-brand:hover {
+    color: #d0ebff !important;
+    text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.7);
+}
+
+/* ===== Styled Nav Links ===== */
+.nav-link {
+    color: #e0eaff !important;
+    font-weight: 600;
+    margin: 0 8px;
+    padding: 6px 10px;
+    border-radius: 6px;
+    transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.nav-link:hover,
+.nav-link:focus {
+    color: #fff !important;
+    background-color: rgba(255, 255, 255, 0.25);
+    box-shadow: 0 0 8px rgba(255, 255, 255, 0.7);
+    text-decoration: none;
+}
+
+/* ===== Navbar Toggler Button (Mobile) ===== */
+.navbar-toggler {
+    border-color: rgba(255, 255, 255, 0.7);
+}
+
+.navbar-toggler-icon {
+    filter: invert(1);
+}
+
+/* Card and other styles unchanged */
+.card {
+    border: none;
+    border-radius: 0.75rem;
+    transition: transform 0.3s ease-in-out;
+}
+
+.card:hover {
+    transform: translateY(-3px);
+}
+
+.card-header {
+    border-radius: 0.75rem 0.75rem 0 0 !important;
+    font-weight: 600;
+}
+
+.card-header.bg-primary {
+    background-color: #007bff !important;
+}
+
+.card-header.bg-secondary {
+    background-color: #6c757d !important;
+}
+
+h1, h2 {
+    font-weight: 700;
+    color: #343a40;
+}
+
+.table {
+    font-size: 0.9rem;
+}
+
+.table th, .table td {
+    white-space: nowrap;
+}
+
+.footer {
+    background-color: #e9ecef !important;
+    border-top: 1px solid #dee2e6;
+}
+
+/* Plot Images */
+.img-fluid {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+}
+
+/* Form Select Width Fix */
+.form-select.w-auto {
+    width: auto !important;
+    min-width: 150px;
+}
+
+/* Cards Responsive Layout */
+.card-body .d-flex {
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+/* Center Plotly Charts */
+.card-body .js-plotly-plot {
+    margin: 0 auto !important;
+}
+
+/* ================================
+        DARK MODE STYLES
+==================================*/
+
+.dark-mode {
+    background-color: #121212 !important;
+    color: #eaeaea !important;
+}
+
+.dark-mode .navbar {
+    background: linear-gradient(45deg, #2c3e50, #3498db);
+    border-bottom: 1px solid #333;
+    box-shadow: none;
+}
+
+.dark-mode .navbar-brand,
+.dark-mode .nav-link {
+    color: #eaeaea !important;
+}
+
+.dark-mode .nav-link:hover,
+.dark-mode .nav-link:focus {
+    background-color: rgba(255, 255, 255, 0.15);
+    color: #fff !important;
+    box-shadow: 0 0 8px rgba(255, 255, 255, 0.6);
+    text-decoration: none;
+}
+
+.dark-mode .card {
+    background-color: #1e1e1e;
+    color: #eaeaea;
+}
+
+.dark-mode .card-header {
+    background-color: #2c2c2c !important;
+    color: #fff;
+}
+
+.dark-mode .table {
+    color: #fff;
+}
+
+.dark-mode .table th,
+.dark-mode .table td {
+    border-color: #444;
+}
+
+.dark-mode .footer {
+    background-color: #1e1e1e !important;
+    color: #ccc;
+}
+
+.dark-mode .btn-outline-secondary {
+    color: #eaeaea;
+    border-color: #aaa;
+}
+
+.dark-mode .btn-outline-secondary:hover {
+    background-color: #eaeaea;
+    color: #000;
+}
+
+/* Home Page Start Analysis Button */
+.start-btn {
+    font-size: 1.3rem;
+    font-weight: 600;
+    border-radius: 8px;
+    transition: all 0.25s ease-in-out;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.15);
+    animation: pulseAnim 2s infinite ease-in-out;
+}
+
+.start-btn:hover {
+    transform: scale(1.07);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+}
+
+/* Button Pulse Animation */
+@keyframes pulseAnim {
+    0%   { transform: scale(1); }
+    50%  { transform: scale(1.06); }
+    100% { transform: scale(1); }
+}

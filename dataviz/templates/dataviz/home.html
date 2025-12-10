@@ -1,0 +1,16 @@
+{% extends "dataviz/base.html" %}
+
+{% block title %}Home - Data Analysis{% endblock %}
+
+{% block content %}
+<div class="text-center my-5">
+    <h1 class="mb-4">Welcome to DataViz Pro 📊</h1>
+    <p class="lead mb-4">Begin your data journey by uploading your own dataset or selecting from a variety of curated sample datasets. Instantly generate insightful analyses and dynamic visualizations to unlock meaningful patterns and make data-driven decisions with ease.</p>
+
+    <div class="d-flex justify-content-center gap-3 flex-wrap">
+        <a href="{% url 'dataviz:data_analysis' %}" class="btn btn-primary btn-lg shadow-lg animate__animated animate__pulse animate__infinite">
+            Load Sample Dataset
+        </a>
+    </div>
+</div>
+{% endblock %}

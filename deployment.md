@@ -29,12 +29,6 @@ sudo useradd -m -s /bin/bash -G www-data dataviz_user
 sudo passwd dataviz_user
 ```
 
-Password:
-
-```
-dataviz@4850
-```
-
 Add sudo:
 
 ```bash
@@ -67,7 +61,7 @@ Run:
 
 ```sql
 CREATE DATABASE dataviz_db;
-CREATE USER dataviz_user WITH PASSWORD 'dataviz@4850';
+CREATE USER dataviz_user WITH PASSWORD 'Dataviz@4850';
 ALTER ROLE dataviz_user SET client_encoding TO 'utf8';
 ALTER ROLE dataviz_user SET default_transaction_isolation TO 'read committed';
 ALTER ROLE dataviz_user SET timezone TO 'UTC';

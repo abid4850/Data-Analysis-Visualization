@@ -1,0 +1,33 @@
+{% extends "dataviz/base.html" %}
+
+{% block title %}Upload Data and Visualize Online | Free Tool{% endblock %}
+
+{% block meta %}
+<meta name="robots" content="noindex, follow">
+{% endblock %}
+
+{% block meta %}
+<meta name="description" content="Learn how to upload data and visualize it online using a free data visualization tool.">
+{% endblock %}
+
+{% block content %}
+<section class="container my-5">
+  <h1 class="fw-bold">How to Upload Data and Visualize It Online</h1>
+
+  <p>
+    Uploading data and visualizing it online is the fastest way to gain insights.
+    With DataViz Pro, you can upload CSV files and generate charts instantly.
+  </p>
+
+  <h2>Steps</h2>
+  <ol>
+    <li>Upload your dataset</li>
+    <li>Explore summaries</li>
+    <li>Create charts and dashboards</li>
+  </ol>
+
+  <a href="{% url 'dataviz:online_data_visualization' %}" class="btn btn-primary">
+    Try Online Data Visualization
+  </a>
+</section>
+{% endblock %}

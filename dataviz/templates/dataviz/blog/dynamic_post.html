@@ -1,0 +1,20 @@
+{% extends "dataviz/base.html" %}
+
+{% block title %}{{ post.title }} | DataViz Pro{% endblock %}
+{% block meta %}
+<meta name="description" content="{{ post.description }}">
+{% endblock %}
+
+{% block content %}
+<section class="container my-5">
+  <h1 class="fw-bold">{{ post.h1 }}</h1>
+
+  {% for paragraph in post.content %}
+    <p>{{ paragraph }}</p>
+  {% endfor %}
+
+  <a href="{{ post.cta_url }}" class="btn btn-primary mt-3">
+    Upload Data & Visualize
+  </a>
+</section>
+{% endblock %}

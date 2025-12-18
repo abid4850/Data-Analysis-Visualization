@@ -1,0 +1,151 @@
+{% extends "dataviz/base.html" %}
+
+{% block meta %}
+<meta name="description" content="DataViz Pro is an online data visualization tool for data analysis and visualization. Upload data, build interactive dashboards, and create Python-powered visualizations instantly.">
+<meta name="keywords" content="data visualization tool, online data visualization, data visualization dashboard, python data visualization, data analysis and visualization">
+<meta name="author" content="Abid Hussain">
+<meta name="robots" content="index, follow">
+{% endblock %}
+
+{% block extra_head %}
+<!-- JSON-LD Structured Data -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Is this an online data visualization tool?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes, DataViz Pro allows you to upload and visualize data directly in your browser."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does this tool require Python knowledge?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No coding knowledge is required. Python runs behind the scenes."
+      }
+    }
+  ]
+}
+</script>
+{% endblock %}
+
+{% block content %}
+
+<!-- HERO -->
+<section class="container my-5 text-center">
+  <h1 class="fw-bold mb-4">
+    Online Data Visualization Tool & Dashboard for Data Analysis
+  </h1>
+  <p class="lead text-muted mb-4">
+    DataViz Pro is a powerful <strong>data visualization tool</strong> designed for
+    <strong>data analysis and visualization</strong> using Python. Upload your datasets, explore trends,
+    and build an interactive <strong>data visualization dashboard</strong> directly in your browser.
+  </p>
+  <a href="{% url 'dataviz:data_analysis' %}" class="btn btn-primary btn-lg"
+     onclick="gtag('event', 'start_analysis', {event_category: 'engagement', event_label: 'homepage_cta'});">
+     Upload Data & Visualize
+  </a>
+</section>
+
+<!-- TRUST -->
+<section class="container my-5 text-center">
+  <p class="text-muted">
+    Trusted by students, analysts, developers, and data-driven teams.
+  </p>
+</section>
+
+<!-- PROBLEM / SOLUTION -->
+<section class="container my-5">
+  <h2 class="fw-bold mb-3">Why Choose DataViz Pro?</h2>
+  <p>
+    Traditional analytics tools are expensive, complex, or require coding expertise.
+    DataViz Pro simplifies <strong>python data visualization</strong> by providing a clean,
+    browser-based platform to analyze datasets and generate insights instantly.
+  </p>
+</section>
+
+<!-- FEATURES -->
+<section class="container my-5">
+  <h2 class="fw-bold mb-4">Key Features</h2>
+  <div class="row g-4">
+
+    <div class="col-md-4">
+      <div class="card shadow-sm h-100">
+        <div class="card-body">
+          <h5 class="card-title fw-semibold">Upload Data & Analyze Instantly</h5>
+          <p class="card-text text-muted">
+            Upload CSV datasets and start data analysis immediately.
+            No setup, no coding, no configuration required.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="card shadow-sm h-100">
+        <div class="card-body">
+          <h5 class="card-title fw-semibold">Interactive Data Visualization Dashboard</h5>
+          <p class="card-text text-muted">
+            Build charts, graphs, and dashboards that turn raw data
+            into clear, actionable insights.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="card shadow-sm h-100">
+        <div class="card-body">
+          <h5 class="card-title fw-semibold">Automated Data Insights</h5>
+          <p class="card-text text-muted">
+            View summaries, distributions, and metrics automatically generated
+            through Python-powered analysis.
+          </p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- USE CASES -->
+<section class="container my-5">
+  <h2 class="fw-bold mb-3">Use Cases</h2>
+  <ul>
+    <li>Business analytics & reporting dashboards</li>
+    <li>Student data science projects</li>
+    <li>Exploratory data analysis</li>
+    <li>Python data visualization demos</li>
+  </ul>
+  <ul>
+    <li><a href="/visualize-sales-data-with-bar-charts/">Sales Data Visualization</a></li>
+    <li><a href="/visualize-finance-data-with-dashboards/">Finance Dashboards</a></li>
+    <li><a href="/visualize-marketing-data-with-line-charts/">Marketing Trends</a></li>
+  </ul>
+</section>
+
+<!-- FAQ -->
+<section class="container my-5">
+  <h2 class="fw-bold mb-3">Frequently Asked Questions</h2>
+  <p><strong>Do I need Python knowledge?</strong> No, the interface is beginner-friendly.</p>
+  <p><strong>Is this an online tool?</strong> Yes, DataViz Pro runs entirely in your browser.</p>
+</section>
+
+<!-- CTA -->
+<section class="bg-light py-5 text-center">
+  <h2 class="fw-bold mb-3">Start Visualizing Your Data</h2>
+  <p class="text-muted mb-4">
+    Upload your data and build powerful visualizations in minutes.
+  </p>
+  <a href="{% url 'dataviz:data_analysis' %}" class="btn btn-outline-primary btn-lg">
+    Launch Data Visualization Tool
+  </a>
+</section>
+
+{% endblock %}

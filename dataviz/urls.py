@@ -1,4 +1,5 @@
 from django.urls import path
+<<<<<<< HEAD
 from django.contrib.sitemaps.views import sitemap
 
 from . import views
@@ -63,4 +64,13 @@ urlpatterns = [
 
     # 🔥 PROGRAMMATIC SEO — MUST BE LAST
     path("<slug:slug>/", programmatic_seo_page, name="programmatic_seo"),
+=======
+from . import views
+
+app_name = 'dataviz'  # important for template URL reversing
+
+urlpatterns = [
+    path('', views.home, name='home'),
+    path('analysis/', views.data_analysis, name='data_analysis'),
+>>>>>>> 45a67942c7c129a1bf993054b772d42b1a2049a1
 ]

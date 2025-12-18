@@ -1,5 +1,6 @@
 {% extends "dataviz/base.html" %}
 
+<<<<<<< HEAD
 {% block meta %}
 <meta name="description" content="DataViz Pro is an online data visualization tool for data analysis and visualization. Upload data, build interactive dashboards, and create Python-powered visualizations instantly.">
 <meta name="keywords" content="data visualization tool, online data visualization, data visualization dashboard, python data visualization, data analysis and visualization">
@@ -148,4 +149,19 @@
   </a>
 </section>
 
+=======
+{% block title %}Home - Data Analysis{% endblock %}
+
+{% block content %}
+<div class="text-center my-5">
+    <h1 class="mb-4">Welcome to DataViz Pro 📊</h1>
+    <p class="lead mb-4">Begin your data journey by uploading your own dataset or selecting from a variety of curated sample datasets. Instantly generate insightful analyses and dynamic visualizations to unlock meaningful patterns and make data-driven decisions with ease.</p>
+
+    <div class="d-flex justify-content-center gap-3 flex-wrap">
+        <a href="{% url 'dataviz:data_analysis' %}" class="btn btn-primary btn-lg shadow-lg animate__animated animate__pulse animate__infinite">
+            Load Sample Dataset
+        </a>
+    </div>
+</div>
+>>>>>>> 45a67942c7c129a1bf993054b772d42b1a2049a1
 {% endblock %}

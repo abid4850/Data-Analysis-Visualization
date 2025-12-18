@@ -1,6 +1,7 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+<<<<<<< HEAD
 
 <head>
     <!-- Google Analytics 4 -->
@@ -36,11 +37,20 @@
     <title>{% block title %}Data Analysis & Visualization App{% endblock %}</title>
 
     <!-- Primary Meta (SEO) -->
+=======
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Data Analysis & Visualization App{% endblock %}</title>
+
+    <!-- SEO Optimization -->
+>>>>>>> 45a67942c7c129a1bf993054b772d42b1a2049a1
     <meta name="description" content="Professional, interactive web app for data analysis & visualization using Django & Bootstrap 5. Upload datasets or use sample data to explore insights and plots.">
     <meta name="keywords" content="data analysis, data visualization, Django, Python, Bootstrap 5, pandas, matplotlib, plotly, seaborn, interactive plots, CSV, XLSX">
     <meta name="author" content="Abid Hussain">
     <meta name="robots" content="index, follow">
 
+<<<<<<< HEAD
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="DataViz Pro">
@@ -56,6 +66,9 @@
     <meta name="twitter:image" content="https://yourdomain.com/static/images/og-dataviz.png">
 
     <!-- Bootstrap CSS -->
+=======
+    <!-- Bootstrap 5 CSS -->
+>>>>>>> 45a67942c7c129a1bf993054b772d42b1a2049a1
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom CSS -->
@@ -63,25 +76,42 @@
 
     <!-- Favicon -->
     <link rel="shortcut icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon">
+<<<<<<< HEAD
     <link rel="icon" href="{% static 'img/favicon.ico' %}" type="image/x-icon">
 
     <!-- Extra head content -->
+=======
+
+>>>>>>> 45a67942c7c129a1bf993054b772d42b1a2049a1
     {% block extra_head %}{% endblock %}
 </head>
 
 <body class="{% if dark_mode %}dark-mode{% endif %}">
+<<<<<<< HEAD
     <!-- 🌟 Navbar -->
+=======
+
+    <!-- 🌟 Gradient Navbar -->
+>>>>>>> 45a67942c7c129a1bf993054b772d42b1a2049a1
     <nav class="navbar navbar-expand-lg shadow-sm" style="background: linear-gradient(90deg, #4a90e2, #007bff, #00c6ff);">
         <div class="container">
             <a class="navbar-brand text-white fw-bold" href="{% url 'dataviz:home' %}">
                 📊 Data Analysis & Visualization
             </a>
 
+<<<<<<< HEAD
+=======
+            <!-- Mobile Toggle Button -->
+>>>>>>> 45a67942c7c129a1bf993054b772d42b1a2049a1
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar"
                 aria-controls="mainNavbar" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon" style="filter: invert(1);"></span>
             </button>
 
+<<<<<<< HEAD
+=======
+            <!-- Menu -->
+>>>>>>> 45a67942c7c129a1bf993054b772d42b1a2049a1
             <div class="collapse navbar-collapse" id="mainNavbar">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
@@ -90,9 +120,12 @@
                     <li class="nav-item">
                         <a class="nav-link text-white fw-semibold" href="{% url 'dataviz:data_analysis' %}">Analysis</a>
                     </li>
+<<<<<<< HEAD
                     <li class="nav-item">
                         <a class="nav-link text-white fw-semibold" href="{% url 'dataviz:about' %}">About</a>
                     </li>
+=======
+>>>>>>> 45a67942c7c129a1bf993054b772d42b1a2049a1
                     <li class="nav-item ms-3">
                         <button id="darkToggle" class="btn btn-outline-light btn-sm">
                             Toggle Theme
@@ -102,8 +135,13 @@
             </div>
         </div>
     </nav>
+<<<<<<< HEAD
 
     <!-- Main content -->
+=======
+    <!-- End Navbar -->
+
+>>>>>>> 45a67942c7c129a1bf993054b772d42b1a2049a1
     <main class="container my-5">
         {% block content %}{% endblock %}
     </main>

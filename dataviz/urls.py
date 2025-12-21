@@ -52,7 +52,7 @@ urlpatterns = [
 
     # Blog
     path("blog/", views.blog_index, name="blog"),
-    path("blog/upload-data-and-visualize-online/", views.blog_upload_visualize, name="blog_upload_visualize"),
+    #ath("blog/upload-data-and-visualize-online/", views.blog_upload_visualize, name="blog_upload_visualize"),
     path("blog/<slug:slug>/", views.blog_dynamic, name="blog_dynamic"),
 
     # Sitemap

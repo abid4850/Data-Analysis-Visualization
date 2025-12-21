@@ -6,10 +6,20 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path("admin/", admin.site.urls),
+
+    # Main site
     path("", include("dataviz.urls")),
-    path("robots.txt", TemplateView.as_view(template_name="robots.txt", content_type="text/plain")),
+
+    # Blog app (namespace works correctly)
+    path("blog/", include(("blog.urls", "blog"), namespace="blog")),
+
+    # Robots
+    path(
+        "robots.txt",
+        TemplateView.as_view(template_name="robots.txt", content_type="text/plain"),
+    ),
 ]
-urlpatterns = [
-    path('', include('dataviz.urls')),  # include app urls
-    path('admin/', admin.site.urls),
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+# Serve media in development
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

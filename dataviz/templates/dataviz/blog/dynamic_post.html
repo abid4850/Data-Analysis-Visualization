@@ -2,19 +2,55 @@
 
 {% block title %}{{ post.title }} | DataViz Pro{% endblock %}
 {% block meta %}
-<meta name="description" content="{{ post.description }}">
+<meta name="description" content="{{ post.title }}">
+{% endblock %}
+
+{% block extra_head %}
+<style>
+    .image-container {
+        text-align: center;
+        margin: 30px 0;
+    }
+    .image-container img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    .cta-button {
+        display: inline-block;
+        background-color: #2ecc71;
+        color: white;
+        padding: 10px 20px;
+        border-radius: 5px;
+        text-decoration: none;
+        font-weight: bold;
+        margin-top: 20px;
+    }
+    .cta-button:hover {
+        background-color: #27ae60;
+        text-decoration: none;
+    }
+    .footer-links {
+        text-align: center;
+        margin-top: 50px;
+        padding-top: 20px;
+        border-top: 1px solid #eee;
+    }
+    .footer-links a {
+        margin: 0 10px;
+    }
+</style>
 {% endblock %}
 
 {% block content %}
 <section class="container my-5">
-  <h1 class="fw-bold">{{ post.h1 }}</h1>
+  <h1 class="fw-bold">{{ post.title }}</h1>
 
-  {% for paragraph in post.content %}
-    <p>{{ paragraph }}</p>
-  {% endfor %}
+  {{ post.content|safe }}
 
-  <a href="{{ post.cta_url }}" class="btn btn-primary mt-3">
-    Upload Data & Visualize
-  </a>
+  {% if post.image %}
+    <img src="{{ post.image.url }}" alt="{{ post.title }}" class="img-fluid my-3">
+  {% endif %}
 </section>
 {% endblock %}

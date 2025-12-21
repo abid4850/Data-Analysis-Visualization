@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.core.files.storage import FileSystemStorage
 from django.conf import settings
 from django.http import Http404
@@ -8,6 +8,8 @@ import os
 
 from . import data_processor
 from .blog_data import BLOG_POSTS
+from blog.models import Blog
+from blog.models import Blog
 
 # -----------------------------
 # Core Pages
@@ -100,15 +102,11 @@ def dataviz_vs_plotly(request):
 # -----------------------------
 
 def blog_index(request):
-    return render(request, "dataviz/blog/index.html")
-
-def blog_upload_visualize(request):
-    return render(request, "dataviz/blog/upload_data_and_visualize_online.html")
+    posts = Blog.objects.all().order_by('-created_at')
+    return render(request, "dataviz/blog/index.html", {"posts": posts})
 
 def blog_dynamic(request, slug):
-    post = next((p for p in BLOG_POSTS if p["slug"] == slug), None)
-    if not post:
-        raise Http404()
+    post = get_object_or_404(Blog, slug=slug)
     return render(request, "dataviz/blog/dynamic_post.html", {"post": post})
 
 # -----------------------------

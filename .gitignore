@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # =========================
 # Python
 # =========================
@@ -74,3 +75,14 @@ yarn-error.log
 *.bak
 *.tmp
 *.swp
+=======
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual environment
+.venv/
+env/
+>>>>>>> b93c9df98be3c9eadbfda75256ce1a9d5da2dd1b

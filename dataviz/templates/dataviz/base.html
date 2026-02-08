@@ -1,0 +1,170 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Google Analytics 4 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-XXXXXXXXXX', { anonymize_ip: true, send_page_view: true });
+        
+    </script>
+
+    <!-- JSON-LD Structured Data -->
+    <script type="application/ld+json">
+        {
+          "@context": "https://schema.org",
+          "@type": "SoftwareApplication",
+          "name": "DataViz Pro",
+          "applicationCategory": "DataVisualization",
+          "operatingSystem": "Web",
+          "description": "Online data visualization and analysis tool for uploading data and creating dashboards using Python.",
+          "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+          }
+        }
+    </script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Title -->
+    <title>{% block title %}Data Analysis & Visualization App{% endblock %}</title>
+
+    <!-- Primary Meta (SEO) -->
+    <meta name="description" content="Professional, interactive web app for data analysis & visualization using Django & Bootstrap 5. Upload datasets or use sample data to explore insights and plots.">
+    <meta name="keywords" content="data analysis, data visualization, Django, Python, Bootstrap 5, pandas, matplotlib, plotly, seaborn, interactive plots, CSV, XLSX">
+    <meta name="author" content="Abid Hussain">
+    <meta name="robots" content="index, follow">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="DataViz Pro">
+    <meta property="og:title" content="{% block og_title %}Online Data Visualization Tool{% endblock %}">
+    <meta property="og:description" content="{% block og_description %}Upload data and create interactive dashboards online.{% endblock %}">
+    <meta property="og:url" content="{{ request.build_absolute_uri }}">
+    <meta property="og:image" content="https://yourdomain.com/static/images/og-dataviz.png">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{% block twitter_title %}DataViz Pro{% endblock %}">
+    <meta name="twitter:description" content="{% block twitter_description %}Python-powered data visualization made simple.{% endblock %}">
+    <meta name="twitter:image" content="https://yourdomain.com/static/images/og-dataviz.png">
+
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon">
+    <link rel="icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon">
+
+     <!-- Font Awesome Icons -->
+    <link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+      integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4Gk+9X+Yw5FZ9+7G6Lr9j7lJQ=="
+      crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    {% block extra_head %}{% endblock %}
+</head>
+
+<body class="{% if dark_mode %}dark-mode{% endif %}">
+
+    <!-- 🌟 Gradient Navbar -->
+    <nav class="navbar navbar-expand-lg shadow-sm" style="background: linear-gradient(90deg, #4a90e2, #007bff, #00c6ff);">
+        <div class="container">
+            <a class="navbar-brand text-white fw-bold" href="{% url 'dataviz:home' %}">
+                📊 Data Analysis & Visualization
+            </a>
+
+            <!-- Mobile Toggle Button -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar"
+                aria-controls="mainNavbar" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon" style="filter: invert(1);"></span>
+            </button>
+
+            <!-- Menu -->
+            <div class="collapse navbar-collapse" id="mainNavbar">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link text-white fw-semibold" href="{% url 'dataviz:home' %}">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white fw-semibold" href="{% url 'dataviz:data_analysis' %}">Analysis</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white fw-semibold" href="{% url 'blog:index' %}">Blog</a>
+                    </li>
+
+              
+
+                    <li class="nav-item">
+                        <a class="nav-link text-white fw-semibold" href="{% url 'dataviz:about' %}">About</a>
+                    </li>
+                    <li class="nav-item ms-3">
+                        <button id="darkToggle" class="btn btn-outline-light btn-sm">
+                            Toggle Theme
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main content -->
+    <main class="container my-5">
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer mt-auto py-3 bg-light">
+    <div class="container d-flex justify-content-between align-items-center flex-wrap gap-3">
+
+        <!-- Left: Copyright -->
+        <span class="text-muted">
+            Made with ❤️ by <strong>Abid Hussain</strong> | Built with Django & Bootstrap 5
+        </span>
+
+        <!-- Right: Social / Project Icons -->
+        <div class="footer-icons d-flex align-items-center gap-3">
+            <a href="https://portfolio.abidnexus.com" target="_blank" aria-label="Portfolio">
+                <i class="fas fa-user-tie"></i>
+            </a>
+
+            <a href="https://calchub.abidnexus.com" target="_blank" aria-label="CalcHub">
+                <i class="fas fa-calculator"></i>
+            </a>
+
+            <a href="https://github.com/abid4850" target="_blank" aria-label="GitHub">
+                <i class="fab fa-github"></i>
+            </a>
+
+            <a href="https://www.kaggle.com/abidhussai512" target="_blank" aria-label="Kaggle">
+                <i class="fab fa-kaggle"></i>
+            </a>
+
+            <a href="https://www.linkedin.com/in/abid-hussain-101846339/" target="_blank" aria-label="LinkedIn">
+                <i class="fab fa-linkedin"></i>
+            </a>
+        </div>
+
+    </div>
+    </footer>
+
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Theme Toggle JS -->
+    <script src="{% static 'js/theme.js' %}"></script>
+
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

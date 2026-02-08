@@ -1,0 +1,30 @@
+{% extends "dataviz/base.html" %}
+
+{% block title %}Online Data Visualization Tool | Upload & Visualize Data{% endblock %}
+
+{% block meta %}
+<meta name="description" content="Online data visualization tool to upload data, analyze datasets, and create interactive charts instantly. No installation required.">
+{% endblock %}
+
+{% block content %}
+<section class="container my-5">
+  <h1 class="fw-bold">Online Data Visualization Tool</h1>
+  <p class="lead">
+    Upload your data and create interactive visualizations online.
+    DataViz Pro helps you analyze datasets, uncover insights, and share dashboards instantly.
+  </p>
+
+  <a href="{% url 'dataviz:data_analysis' %}" class="btn btn-primary btn-lg">
+    Upload Data & Visualize
+  </a>
+
+  <hr>
+
+  <h2>Why Use Online Data Visualization?</h2>
+  <ul>
+    <li>No software installation</li>
+    <li>Instant charts and dashboards</li>
+    <li>Works with CSV datasets</li>
+  </ul>
+</section>
+{% endblock %}

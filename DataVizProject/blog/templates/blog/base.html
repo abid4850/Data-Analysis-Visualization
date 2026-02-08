@@ -1,0 +1,31 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{% block title %}My Blog{% endblock %}</title>
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@3.4.1/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 text-gray-800">
+
+
+<nav class="bg-white shadow">
+<div class="max-w-6xl mx-auto px-6 py-4 flex justify-between">
+<h1 class="text-2xl font-bold"><a href="/">My Site</a></h1>
+<a class="nav-link text-white fw-semibold" href="{% url 'blog:index' %}">Blog</a>
+</div>
+</nav>
+
+<main class="max-w-6xl mx-auto px-6 py-10">
+{% block content %}{% endblock %}
+</main>
+
+
+<footer class="text-center py-6 text-gray-600">
+© {{ now|date:"Y" }} My Blog
+</footer>
+
+
+</body>
+</html>

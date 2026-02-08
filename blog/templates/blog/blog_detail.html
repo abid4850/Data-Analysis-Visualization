@@ -1,0 +1,23 @@
+{% extends "blog/base.html" %}
+
+{% block title %}{{ post.title }}{% endblock %}
+
+{% block content %}
+<article class="prose lg:prose-xl max-w-none">
+
+  <h1 class="text-4xl font-bold mb-4">{{ post.title }}</h1>
+
+  {% if post.image %}
+    <img src="{{ post.image.url }}" alt="{{ post.title }}" class="w-full h-64 object-cover rounded-lg mb-8">
+  {% endif %}
+
+  <p class="text-gray-500 mb-8">
+    Published on {{ post.created_at|date:"F j, Y" }}
+  </p>
+
+  <div class="leading-relaxed">
+    {{ post.content|safe }}
+  </div>
+
+</article>
+{% endblock %}

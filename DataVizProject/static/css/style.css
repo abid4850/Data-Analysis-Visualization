@@ -1,0 +1,366 @@
+/* ==================================================
+   DataViz Pro – Premium SaaS UI (Final)
+   Author: Abid Hussain
+================================================== */
+
+/* -------------------- ROOT VARIABLES -------------------- */
+:root {
+    --primary: #007bff;
+    --secondary: #00c6ff;
+    --indigo: #6f42c1;
+    --teal: #20c997;
+    --orange: #fd7e14;
+
+    --dark-bg: #121212;
+    --dark-card: #1e1e1e;
+
+    --radius-lg: 18px;
+    --radius-md: 12px;
+    --transition: all 0.35s ease;
+}
+
+/* -------------------- GLOBAL -------------------- */
+body {
+    background-color: #f8f9fa;
+    color: #212529;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.65;
+    transition: var(--transition);
+}
+
+h1, h2, h3, h4, h5 {
+    font-weight: 700;
+}
+
+p {
+    font-size: 1.05rem;
+}
+
+a {
+    text-decoration: none;
+    transition: var(--transition);
+}
+
+/* -------------------- NAVBAR -------------------- */
+.navbar {
+    background: linear-gradient(90deg, #4a90e2, #007bff, #00c6ff);
+    box-shadow: 0 6px 22px rgba(0, 123, 255, 0.35);
+}
+
+.nav-link {
+    border-radius: 8px;
+    padding: 6px 12px;
+}
+
+.nav-link:hover {
+    background: rgba(255, 255, 255, 0.25);
+}
+
+/* -------------------- HERO GRADIENT TEXT -------------------- */
+section.text-center h1 {
+    background: linear-gradient(90deg, #007bff, #00c6ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* -------------------- BUTTON POLISH -------------------- */
+.btn {
+    border-radius: 10px;
+    font-weight: 600;
+    transition: var(--transition);
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+}
+
+/* ==================================================
+   🧊 GLASSMORPHISM BASE CARD
+================================================== */
+.card {
+    border: none;
+    border-radius: var(--radius-lg);
+    background: rgba(255, 255, 255, 0.78);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    box-shadow: 0 12px 35px rgba(0,0,0,0.12);
+    transition: var(--transition);
+}
+
+.card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 22px 55px rgba(0,0,0,0.22);
+}
+
+/* ==================================================
+   🎯 KEY FEATURES – ADVANCED STYLING
+================================================== */
+
+/* Section requirement:
+   <section class="container my-5 key-features"> */
+
+.key-features .card {
+    position: relative;
+    padding-top: 2.5rem;
+    overflow: hidden;
+}
+
+/* 🎨 ICON CIRCLE (AUTO GENERATED) */
+.key-features .card::before {
+    content: "📊";
+    position: absolute;
+    top: 18px;
+    left: 18px;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 1.2rem;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.25);
+}
+
+/* 🎯 FEATURE 1 – BLUE */
+.key-features .col-md-4:nth-child(1) .card {
+    background: linear-gradient(
+        135deg,
+        rgba(0, 123, 255, 0.12),
+        rgba(0, 198, 255, 0.18)
+    );
+}
+
+.key-features .col-md-4:nth-child(1) .card::before {
+    content: "⚡";
+    background: linear-gradient(135deg, #007bff, #00c6ff);
+}
+
+/* 🎯 FEATURE 2 – INDIGO */
+.key-features .col-md-4:nth-child(2) .card {
+    background: linear-gradient(
+        135deg,
+        rgba(111, 66, 193, 0.12),
+        rgba(90, 24, 154, 0.18)
+    );
+}
+
+.key-features .col-md-4:nth-child(2) .card::before {
+    content: "📈";
+    background: linear-gradient(135deg, #6f42c1, #4b2aad);
+}
+
+/* 🎯 FEATURE 3 – TEAL */
+.key-features .col-md-4:nth-child(3) .card {
+    background: linear-gradient(
+        135deg,
+        rgba(32, 201, 151, 0.14),
+        rgba(0, 180, 216, 0.18)
+    );
+}
+
+.key-features .col-md-4:nth-child(3) .card::before {
+    content: "🤖";
+    background: linear-gradient(135deg, #20c997, #00b4d8);
+}
+
+/* Card title spacing fix */
+.key-features .card-title {
+    margin-top: 1.2rem;
+    font-weight: 600;
+}
+
+/* ==================================================
+   ✨ FEATURE REVEAL ANIMATION (PREMIUM)
+================================================== */
+
+.key-features .card {
+    position: relative;
+    opacity: 0;
+    transform: translateY(50px) scale(0.97);
+    animation: featureReveal 0.9s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
+    overflow: hidden;
+}
+
+/* Staggered animation */
+.key-features .col-md-4:nth-child(1) .card { animation-delay: 0.15s; }
+.key-features .col-md-4:nth-child(2) .card { animation-delay: 0.35s; }
+.key-features .col-md-4:nth-child(3) .card { animation-delay: 0.55s; }
+
+/* Glow layer (subtle & professional) */
+.key-features .card::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(
+        circle at top left,
+        rgba(255, 255, 255, 0.45),
+        transparent 60%
+    );
+    opacity: 0;
+    transition: opacity 0.6s ease;
+    pointer-events: none;
+}
+
+/* Hover glow activation */
+.key-features .card:hover::after {
+    opacity: 1;
+}
+
+/* Keyframes */
+@keyframes featureReveal {
+    0% {
+        opacity: 0;
+        transform: translateY(50px) scale(0.97);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+
+/* ==================================================
+   TABLE STYLING
+================================================== */
+.table {
+    border-radius: var(--radius-md);
+    overflow: hidden;
+}
+
+.table th {
+    background: linear-gradient(90deg, #007bff, #00c6ff);
+    color: #fff;
+}
+
+/* ==================================================
+   FOOTER
+================================================== */
+.footer {
+    background-color: #e9ecef;
+    border-top: 1px solid #dee2e6;
+}
+
+/* ==================================================
+   🌙 DARK MODE
+================================================== */
+.dark-mode {
+    background-color: var(--dark-bg);
+    color: #eaeaea;
+}
+
+.dark-mode .navbar {
+    background: linear-gradient(90deg, #2c3e50, #3498db);
+}
+
+.dark-mode .card {
+    background: rgba(30, 30, 30, 0.85);
+    box-shadow: 0 14px 40px rgba(0,0,0,0.7);
+}
+
+.dark-mode .key-features .col-md-4:nth-child(1) .card {
+    background: linear-gradient(135deg, rgba(52,152,219,0.25), rgba(41,128,185,0.35));
+}
+
+.dark-mode .key-features .col-md-4:nth-child(2) .card {
+    background: linear-gradient(135deg, rgba(155,89,182,0.25), rgba(108,52,131,0.35));
+}
+
+.dark-mode .key-features .col-md-4:nth-child(3) .card {
+    background: linear-gradient(135deg, rgba(26,188,156,0.25), rgba(22,160,133,0.35));
+}
+
+.dark-mode .table th {
+    background: linear-gradient(90deg, #3498db, #2c3e50);
+}
+
+.dark-mode .footer {
+    background-color: #1e1e1e;
+    color: #ccc;
+}
+
+/* -------------------- RESPONSIVE -------------------- */
+@media (max-width: 768px) {
+    h1 {
+        font-size: 2rem;
+    }
+}
+
+/* ==================================================
+   DARK MODE – KEY FEATURES
+================================================== */
+
+.dark-mode .key-features .card {
+    color: #eaf2f8;
+}
+
+/* Upload Data */
+.dark-mode .key-features .col-md-4:nth-child(1) .card {
+    background: linear-gradient(
+        135deg,
+        rgba(52, 152, 219, 0.35),
+        rgba(41, 128, 185, 0.45)
+    );
+    border-color: rgba(52, 152, 219, 0.5);
+}
+
+/* Visualization */
+.dark-mode .key-features .col-md-4:nth-child(2) .card {
+    background: linear-gradient(
+        135deg,
+        rgba(155, 89, 182, 0.35),
+        rgba(108, 52, 131, 0.45)
+    );
+    border-color: rgba(155, 89, 182, 0.5);
+}
+
+/* Insights */
+.dark-mode .key-features .col-md-4:nth-child(3) .card {
+    background: linear-gradient(
+        135deg,
+        rgba(26, 188, 156, 0.35),
+        rgba(22, 160, 133, 0.45)
+    );
+    border-color: rgba(26, 188, 156, 0.5);
+}
+
+/* ================================
+   FOOTER ICONS – PROFESSIONAL
+================================ */
+
+.footer-icons a {
+    color: #6c757d;
+    font-size: 1.25rem;
+    transition: all 0.3s ease;
+}
+
+.footer-icons a:hover {
+    color: #007bff;
+    transform: translateY(-2px);
+}
+
+/* Individual brand hover colors */
+.footer-icons a[aria-label="GitHub"]:hover {
+    color: #000;
+}
+
+.footer-icons a[aria-label="Kaggle"]:hover {
+    color: #20beff;
+}
+
+.footer-icons a[aria-label="LinkedIn"]:hover {
+    color: #0a66c2;
+}
+
+/* Dark mode support */
+.dark-mode .footer {
+    background-color: #1e1e1e !important;
+}
+
+.dark-mode .footer-icons a {
+    color: #b0b0b0;
+}
+
+.dark-mode .footer-icons a:hover {
+    color: #ffffff;
+}

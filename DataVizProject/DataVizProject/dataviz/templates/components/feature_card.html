@@ -1,0 +1,69 @@
+{% extends "dataviz/base.html" %}
+
+{% block title %}Features | DataViz Pro{% endblock %}
+
+{% block meta %}
+<meta name="description" content="Explore all the powerful features of DataViz Pro. Create interactive charts, analyze datasets, and gain insights quickly with Python and Django.">
+<meta name="keywords" content="data visualization, analytics platform, features, Python, Pandas, Django, SaaS analytics">
+{% endblock %}
+
+{% block content %}
+
+<section class="container my-5 text-center">
+  <h1 class="fw-bold mb-4">All Features of DataViz Pro</h1>
+  <p class="text-muted mb-5">Explore the powerful tools that make data analysis simple and effective.</p>
+
+  <div class="row g-4">
+
+    <!-- Feature 1 -->
+    <div class="col-md-4">
+      <div class="card shadow-sm h-100 feature-card">
+        <div class="card-body text-center">
+          <!-- SVG Icon -->
+          <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="currentColor" class="mb-3 text-primary bi bi-upload" viewBox="0 0 16 16">
+            <path d="M.5 9.9a.5.5 0 0 1 .5-.5H5V1.5a.5.5 0 0 1 1 0V9.4h4.5a.5.5 0 0 1 0 1H6v4.6a.5.5 0 0 1-1 0V10.9H1a.5.5 0 0 1-.5-.5z"/>
+          </svg>
+          <h5 class="card-title fw-semibold">Instant Dataset Upload</h5>
+          <p class="card-text text-muted">
+            Upload CSV or structured datasets anytime, no coding required, and start analysis instantly.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Feature 2 -->
+    <div class="col-md-4">
+      <div class="card shadow-sm h-100 feature-card">
+        <div class="card-body text-center">
+          <!-- SVG Icon -->
+          <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="currentColor" class="mb-3 text-success bi bi-bar-chart-line" viewBox="0 0 16 16">
+            <path d="M0 0h1v15H0V0zm2 4h1v11H2V4zm3 3h1v8H5V7zm3 2h1v6H8V9zm3-2h1v8h-1V7z"/>
+          </svg>
+          <h5 class="card-title fw-semibold">Interactive Visualization Builder</h5>
+          <p class="card-text text-muted">
+            Create dynamic charts and graphs that make patterns and insights easy to spot and share.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Feature 3 -->
+    <div class="col-md-4">
+      <div class="card shadow-sm h-100 feature-card">
+        <div class="card-body text-center">
+          <!-- SVG Icon -->
+          <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="currentColor" class="mb-3 text-warning bi bi-graph-up" viewBox="0 0 16 16">
+            <path fill-rule="evenodd" d="M0 0h1v15H0V0zm2 6h1v9H2V6zm3 1h1v8H5V7zm3 2h1v6H8V9zm3-4h1v10h-1V5z"/>
+          </svg>
+          <h5 class="card-title fw-semibold">Automated Data Summaries & Metrics</h5>
+          <p class="card-text text-muted">
+            Explore statistical summaries, distributions, and trends, all generated automatically without manual effort.
+          </p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+{% endblock %}

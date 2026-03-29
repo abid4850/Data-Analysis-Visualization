@@ -1,0 +1,27 @@
+{% extends 'dataviz/base.html' %}
+
+{% block title %}Blog{% endblock %}
+
+{% block content %}
+<section class="container my-5">
+  <h1 class="fw-bold mb-4">Blog Posts</h1>
+
+  {% for post in posts %}
+    <div class="card mb-3">
+      {% if post.image %}
+        <img src="{{ post.image.url }}" class="card-img-top" alt="{{ post.title }}">
+      {% endif %}
+      <div class="card-body">
+        <h5 class="card-title">
+          <a href="{% url 'dataviz:blog_dynamic' post.slug %}" class="text-decoration-none">{{ post.title }}</a>
+        </h5>
+        <p class="card-text">{{ post.created_at|date:"M d, Y" }}</p>
+        <p class="card-text">{{ post.content|truncatewords:20|safe }}</p>
+        <a href="{% url 'dataviz:blog_dynamic' post.slug %}" class="btn btn-primary">Read More</a>
+      </div>
+    </div>
+  {% empty %}
+    <p>No blog posts yet.</p>
+  {% endfor %}
+</section>
+{% endblock %}

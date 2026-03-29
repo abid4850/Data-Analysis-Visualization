@@ -1,0 +1,7 @@
+<ul>
+  {% for post in posts %}
+    <li>
+      <a href="{% url 'blog:index' %}" class="text-lg font-semibold">Blog</a>
+    </li>
+  {% endfor %}
+</ul>

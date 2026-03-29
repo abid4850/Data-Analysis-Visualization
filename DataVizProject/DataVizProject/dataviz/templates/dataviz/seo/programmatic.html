@@ -1,0 +1,43 @@
+{% extends "dataviz/base.html" %}
+
+{% block title %}{{ page.title }} | DataViz Pro{% endblock %}
+
+{% block meta %}
+<meta name="description" content="{{ page.description }}">
+{% endblock %}
+
+{% block content %}
+<section class="container my-5">
+
+  <h1 class="fw-bold">{{ page.h1 }}</h1>
+
+  <p class="lead">
+    {{ page.intro }}
+  </p>
+
+  <h2>Common Use Cases</h2>
+  <ul>
+    {% for use in page.use_cases %}
+      <li>{{ use }}</li>
+    {% endfor %}
+  </ul>
+
+  <h2>How to Visualize This Data</h2>
+  <ol>
+    <li>Upload your dataset</li>
+    <li>Select chart type</li>
+    <li>Explore insights instantly</li>
+  </ol>
+
+  <a href="/online-data-visualization/" class="btn btn-primary btn-lg mt-3">
+    Upload Data & Visualize
+  </a>
+
+  <hr class="my-5">
+
+  <p class="text-muted">
+    DataViz Pro is an online data visualization tool for data analysis and visualization using Python.
+  </p>
+
+</section>
+{% endblock %}

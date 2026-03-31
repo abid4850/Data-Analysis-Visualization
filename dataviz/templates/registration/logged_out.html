@@ -1,0 +1,17 @@
+{% extends "dataviz/base.html" %}
+
+{% block title %}Logged Out | DataViz Pro{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-lg-6 col-md-8">
+    <div class="card shadow-sm border-0 text-center">
+      <div class="card-body p-4">
+        <h1 class="h4 fw-bold mb-2">You are logged out</h1>
+        <p class="text-muted mb-4">Login again to access dataset downloads and upload to the shared store.</p>
+        <a href="{% url 'login' %}" class="btn btn-primary">Login Again</a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

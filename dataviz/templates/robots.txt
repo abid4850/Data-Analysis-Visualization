@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+
+# Keep the interactive analysis workspace out of search indexes.
+Disallow: /analysis/
+
+Sitemap: {{ request.scheme }}://{{ request.get_host }}{% url 'dataviz:sitemap' %}

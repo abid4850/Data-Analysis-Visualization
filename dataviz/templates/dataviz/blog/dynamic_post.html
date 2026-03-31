@@ -1,56 +1,481 @@
 {% extends "dataviz/base.html" %}
 
-{% block title %}{{ post.title }} | DataViz Pro{% endblock %}
+{% block title %}{{ post.title }} | DataViz Pro Blog{% endblock %}
+{% block og_title %}{{ post.title }} | DataViz Pro Blog{% endblock %}
+{% block twitter_title %}{{ post.title }} | DataViz Pro Blog{% endblock %}
+{% block og_description %}{{ post.content|striptags|truncatewords:28 }}{% endblock %}
+{% block twitter_description %}{{ post.content|striptags|truncatewords:28 }}{% endblock %}
+
 {% block meta %}
-<meta name="description" content="{{ post.title }}">
+<meta name="description" content="{{ post.content|striptags|truncatewords:28 }}">
+<meta name="keywords" content="data visualization blog, analytics insight, dashboard strategy, dataviz pro">
+<meta name="author" content="Abid Hussain">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="{{ request.scheme }}://{{ request.get_host }}{{ request.path }}">
 {% endblock %}
 
 {% block extra_head %}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-    .image-container {
-        text-align: center;
-        margin: 30px 0;
+    .post-pro {
+        --ink-900: #0c1f3f;
+        --ink-700: #27486f;
+        --ink-500: #4f6b8c;
+        --line-soft: rgba(12, 31, 63, 0.14);
+        --shadow-soft: 0 14px 34px rgba(12, 31, 63, 0.1);
+        --shadow-strong: 0 24px 46px rgba(12, 31, 63, 0.16);
+        font-family: 'Instrument Sans', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        color: var(--ink-900);
     }
-    .image-container img {
+
+    .post-pro h1,
+    .post-pro h2,
+    .post-pro h3,
+    .post-pro h4,
+    .post-pro h5,
+    .post-pro h6 {
+        font-family: 'Outfit', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        letter-spacing: -0.02em;
+        color: var(--ink-900);
+    }
+
+    .post-shell {
+        max-width: 940px;
+        margin: 0 auto;
+    }
+
+    .post-hero {
+        position: relative;
+        overflow: hidden;
+        border-radius: 1.2rem;
+        border: 1px solid var(--line-soft);
+        box-shadow: var(--shadow-strong);
+        background:
+            radial-gradient(120% 110% at 0% 0%, rgba(23, 151, 247, 0.2), transparent 56%),
+            radial-gradient(90% 95% at 100% 0%, rgba(255, 190, 66, 0.18), transparent 52%),
+            linear-gradient(130deg, #fbfdff 0%, #f1f8ff 44%, #f6fffd 100%);
+        padding: 1.4rem;
+        margin-bottom: 1.25rem;
+    }
+
+    .post-breadcrumb {
+        display: inline-flex;
+        gap: 0.45rem;
+        align-items: center;
+        color: var(--ink-500);
+        font-size: 0.86rem;
+        margin-bottom: 0.85rem;
+    }
+
+    .post-breadcrumb a {
+        color: var(--ink-700);
+        text-decoration: none;
+        font-weight: 600;
+    }
+
+    .post-breadcrumb a:hover {
+        color: #0a76cf;
+    }
+
+    .post-title {
+        font-size: clamp(1.5rem, 2.7vw, 2.5rem);
+        line-height: 1.13;
+        margin-bottom: 0.75rem;
+    }
+
+    .post-meta {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 0.7rem;
+        color: var(--ink-500);
+        font-size: 0.87rem;
+        margin-bottom: 0.9rem;
+    }
+
+    .post-meta span {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.35rem;
+    }
+
+    .post-kicker {
+        display: inline-flex;
+        align-items: center;
+        border-radius: 999px;
+        border: 1px solid var(--line-soft);
+        background: rgba(255, 255, 255, 0.77);
+        padding: 0.34rem 0.72rem;
+        font-weight: 700;
+        font-size: 0.78rem;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+    }
+
+    .post-cover {
+        border-radius: 1rem;
+        overflow: hidden;
+        border: 1px solid var(--line-soft);
+        box-shadow: var(--shadow-soft);
+        margin-bottom: 1rem;
+        background: linear-gradient(145deg, #ecf5ff, #f2fffb);
+    }
+
+    .post-cover img {
+        width: 100%;
+        max-height: 460px;
+        object-fit: cover;
+        display: block;
+    }
+
+    .post-article {
+        background: #fff;
+        border: 1px solid var(--line-soft);
+        box-shadow: var(--shadow-soft);
+        border-radius: 1rem;
+        padding: 1.15rem;
+    }
+
+    .post-article :is(p, li) {
+        color: var(--ink-700);
+        line-height: 1.8;
+        font-size: 1rem;
+    }
+
+    .post-article p {
+        margin-bottom: 1rem;
+    }
+
+    .post-article :is(h2, h3, h4) {
+        margin-top: 1.45rem;
+        margin-bottom: 0.6rem;
+    }
+
+    .post-article ul,
+    .post-article ol {
+        margin-bottom: 1rem;
+        padding-left: 1.2rem;
+    }
+
+    .post-article blockquote {
+        border-left: 4px solid #0a76cf;
+        background: #f4f9ff;
+        margin: 1.15rem 0;
+        padding: 0.75rem 0.95rem;
+        border-radius: 0.5rem;
+        color: #24486f;
+    }
+
+    .post-article img {
         max-width: 100%;
         height: auto;
-        border-radius: 8px;
-        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        border-radius: 0.72rem;
+        border: 1px solid var(--line-soft);
+        box-shadow: 0 10px 24px rgba(12, 31, 63, 0.12);
+        margin: 1rem 0;
     }
-    .cta-button {
-        display: inline-block;
-        background-color: #2ecc71;
-        color: white;
-        padding: 10px 20px;
-        border-radius: 5px;
+
+    .post-article a {
+        color: #0a76cf;
+        text-decoration-thickness: 1.5px;
+        text-underline-offset: 2px;
+    }
+
+    .post-actions {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: center;
+        gap: 0.9rem;
+        border-top: 1px solid var(--line-soft);
+        margin-top: 1.2rem;
+        padding-top: 1rem;
+    }
+
+    .post-actions .btn {
+        border-radius: 0.72rem;
+        font-weight: 700;
+    }
+
+    .post-primary-btn {
+        background: linear-gradient(135deg, #0b78d4, #1797f7);
+        color: #fff;
+        border: 0;
+        box-shadow: 0 10px 24px rgba(11, 120, 212, 0.29);
+    }
+
+    .post-primary-btn:hover,
+    .post-primary-btn:focus-visible {
+        color: #fff;
+    }
+
+    .post-related-cta {
+        border-radius: 1rem;
+        border: 1px solid var(--line-soft);
+        background: linear-gradient(130deg, #ffffff 0%, #eef6ff 46%, #f3fffc 100%);
+        box-shadow: var(--shadow-soft);
+        margin-top: 1.3rem;
+        padding: 1rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 0.85rem;
+        flex-wrap: wrap;
+    }
+
+    .post-related-cta p {
+        color: var(--ink-500);
+        margin: 0;
+        max-width: 60ch;
+    }
+
+    .post-more {
+        margin-top: 1.35rem;
+    }
+
+    .post-more-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: end;
+        gap: 0.8rem;
+        flex-wrap: wrap;
+        margin-bottom: 0.9rem;
+    }
+
+    .post-more-head h2 {
+        margin: 0;
+    }
+
+    .post-more-head p {
+        margin: 0;
+        color: var(--ink-500);
+        max-width: 56ch;
+    }
+
+    .post-more-card {
+        height: 100%;
+        border-radius: 0.95rem;
+        border: 1px solid var(--line-soft);
+        box-shadow: var(--shadow-soft);
+        background: #fff;
+        overflow: hidden;
+        transition: transform 0.22s ease, box-shadow 0.22s ease;
+    }
+
+    .post-more-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 18px 34px rgba(12, 31, 63, 0.15);
+    }
+
+    .post-more-media {
+        width: 100%;
+        height: 150px;
+        object-fit: cover;
+        border-bottom: 1px solid var(--line-soft);
+        background: linear-gradient(145deg, #eaf3ff, #f2fffc);
+    }
+
+    .post-more-fallback {
+        width: 100%;
+        height: 150px;
+        border-bottom: 1px solid var(--line-soft);
+        background: linear-gradient(145deg, #eaf3ff, #f2fffc);
+        color: #0a76cf;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+    }
+
+    .post-more-body {
+        padding: 0.9rem;
+    }
+
+    .post-more-meta {
+        color: var(--ink-500);
+        font-size: 0.8rem;
+        margin-bottom: 0.4rem;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.3rem;
+    }
+
+    .post-more-title {
+        font-size: 1.02rem;
+        margin-bottom: 0.45rem;
+    }
+
+    .post-more-title a {
+        color: inherit;
         text-decoration: none;
-        font-weight: bold;
-        margin-top: 20px;
     }
-    .cta-button:hover {
-        background-color: #27ae60;
+
+    .post-more-title a:hover {
+        color: #0a76cf;
+    }
+
+    .post-more-excerpt {
+        color: var(--ink-500);
+        font-size: 0.9rem;
+        line-height: 1.6;
+        margin-bottom: 0.6rem;
+    }
+
+    .post-more-link {
+        color: #0a76cf;
+        font-weight: 700;
         text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.35rem;
     }
-    .footer-links {
-        text-align: center;
-        margin-top: 50px;
-        padding-top: 20px;
-        border-top: 1px solid #eee;
+
+    .post-more-link:hover {
+        color: #084f8a;
     }
-    .footer-links a {
-        margin: 0 10px;
+
+    .post-reveal {
+        opacity: 0;
+        transform: translateY(14px);
+        transition: opacity 0.44s ease, transform 0.44s ease;
+    }
+
+    .post-reveal.in-view {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    @media (max-width: 767.98px) {
+        .post-hero,
+        .post-article,
+        .post-related-cta {
+            padding: 1rem;
+        }
+
+        .post-actions {
+            align-items: stretch;
+        }
+
+        .post-actions .btn {
+            width: 100%;
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .post-reveal {
+            transition: none;
+            transform: none;
+        }
     }
 </style>
 {% endblock %}
 
 {% block content %}
-<section class="container my-5">
-  <h1 class="fw-bold">{{ post.title }}</h1>
+<div class="post-pro">
+    <div class="post-shell">
+        {% widthratio post.content|striptags|wordcount 200 1 as read_time %}
 
-  {{ post.content|safe }}
+        <header class="post-hero post-reveal">
+            <div class="post-breadcrumb" aria-label="breadcrumb">
+                <a href="{% url 'dataviz:blog' %}">Blog</a>
+                <i class="fa-solid fa-chevron-right" aria-hidden="true"></i>
+                <span>Article</span>
+            </div>
 
-  {% if post.image %}
-    <img src="{{ post.image.url }}" alt="{{ post.title }}" class="img-fluid my-3">
-  {% endif %}
-</section>
+            <span class="post-kicker">DataViz Pro Insight</span>
+            <h1 class="post-title">{{ post.title }}</h1>
+
+            <div class="post-meta">
+                <span><i class="fa-regular fa-calendar"></i> {{ post.created_at|date:"M d, Y" }}</span>
+                <span><i class="fa-regular fa-clock"></i> {{ read_time|default:"1" }} min read</span>
+            </div>
+        </header>
+
+        {% if post.image %}
+            <figure class="post-cover post-reveal">
+                <img src="{{ post.image.url }}" alt="{{ post.title }}" loading="lazy">
+            </figure>
+        {% endif %}
+
+        <article class="post-article post-reveal" aria-label="Blog article content">
+            {{ post.content|safe }}
+
+            <div class="post-actions">
+                <a href="{% url 'dataviz:blog' %}" class="btn btn-outline-secondary">
+                    <i class="fa-solid fa-arrow-left"></i> Back to Blog
+                </a>
+                <a href="{% url 'dataviz:data_analysis' %}" class="btn post-primary-btn">
+                    Apply This to Your Data
+                </a>
+            </div>
+        </article>
+
+        <section class="post-related-cta post-reveal" aria-label="post conversion section">
+            <div>
+                <h2 class="h5 fw-bold mb-1">Turn this idea into an interactive dashboard</h2>
+                <p>Upload a dataset and recreate this insight flow in minutes using the DataViz Pro analysis workspace.</p>
+            </div>
+            <a href="{% url 'dataviz:data_visualization_dashboard' %}" class="btn btn-outline-primary fw-semibold">View Dashboard Examples</a>
+        </section>
+
+        {% if related_posts %}
+            <section class="post-more post-reveal" aria-labelledby="related-posts-title">
+                <div class="post-more-head">
+                    <div>
+                        <h2 id="related-posts-title" class="h4 fw-bold">Related Insights</h2>
+                        <p>Continue reading practical guides to improve dashboards, storytelling, and decision workflows.</p>
+                    </div>
+                    <a href="{% url 'dataviz:blog' %}" class="btn btn-outline-secondary btn-sm fw-semibold">View all posts</a>
+                </div>
+
+                <div class="row g-3">
+                    {% for related in related_posts %}
+                        <div class="col-md-4">
+                            <article class="post-more-card" aria-labelledby="related-title-{{ related.slug }}">
+                                {% if related.image %}
+                                    <img src="{{ related.image.url }}" alt="{{ related.title }}" class="post-more-media" loading="lazy">
+                                {% else %}
+                                    <div class="post-more-fallback" aria-hidden="true"><i class="fa-solid fa-chart-column"></i></div>
+                                {% endif %}
+                                <div class="post-more-body">
+                                    <div class="post-more-meta"><i class="fa-regular fa-calendar"></i> {{ related.created_at|date:"M d, Y" }}</div>
+                                    <h3 id="related-title-{{ related.slug }}" class="post-more-title">
+                                        <a href="{% url 'dataviz:blog_dynamic' related.slug %}">{{ related.title }}</a>
+                                    </h3>
+                                    <p class="post-more-excerpt">{{ related.content|striptags|truncatewords:16 }}</p>
+                                    <a href="{% url 'dataviz:blog_dynamic' related.slug %}" class="post-more-link">Read next <i class="fa-solid fa-arrow-right"></i></a>
+                                </div>
+                            </article>
+                        </div>
+                    {% endfor %}
+                </div>
+            </section>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+    (function () {
+        const revealItems = document.querySelectorAll('.post-reveal');
+        if (!revealItems.length) return;
+
+        const observer = new IntersectionObserver(
+            function(entries, revealObserver) {
+                entries.forEach(function(entry) {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('in-view');
+                        revealObserver.unobserve(entry.target);
+                    }
+                });
+            },
+            { threshold: 0.14 }
+        );
+
+        revealItems.forEach(function(item) { observer.observe(item); });
+    })();
+</script>
 {% endblock %}

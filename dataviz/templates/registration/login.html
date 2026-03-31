@@ -1,0 +1,265 @@
+{% extends "dataviz/base.html" %}
+
+{% block title %}Login | DataViz Pro{% endblock %}
+
+{% block extra_head %}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@500;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  .login-page {
+    --ink-900: #0b1b36;
+    --ink-700: #284b77;
+    --ink-500: #54719a;
+    --line-soft: rgba(11, 27, 54, 0.16);
+    --accent-a: #1486f4;
+    --accent-b: #0ab494;
+    color: var(--ink-900);
+    font-family: 'Plus Jakarta Sans', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+
+  .login-page h1,
+  .login-page h2,
+  .login-page h3,
+  .login-page h4 {
+    font-family: 'Syne', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    letter-spacing: -0.02em;
+  }
+
+  .login-shell {
+    position: relative;
+    overflow: hidden;
+    border-radius: 1.2rem;
+    border: 1px solid var(--line-soft);
+    background:
+      radial-gradient(120% 120% at 0% 0%, rgba(20, 134, 244, 0.2), transparent 56%),
+      radial-gradient(90% 90% at 100% 0%, rgba(10, 180, 148, 0.2), transparent 54%),
+      linear-gradient(130deg, #fdfeff 0%, #f2f9ff 50%, #f5fffb 100%);
+    box-shadow: 0 24px 54px rgba(11, 27, 54, 0.14);
+    padding: 1rem;
+  }
+
+  .login-grid {
+    display: grid;
+    grid-template-columns: minmax(280px, 1fr) minmax(320px, 1fr);
+    gap: 0.9rem;
+  }
+
+  .login-showcase {
+    border-radius: 0.95rem;
+    border: 1px solid rgba(11, 27, 54, 0.12);
+    background: linear-gradient(155deg, rgba(255, 255, 255, 0.9), rgba(242, 249, 255, 0.92));
+    padding: 1rem;
+  }
+
+  .login-kicker {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.75rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    border-radius: 999px;
+    border: 1px solid rgba(11, 27, 54, 0.14);
+    background: rgba(255, 255, 255, 0.85);
+    padding: 0.28rem 0.62rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .login-showcase h1 {
+    font-size: clamp(1.4rem, 2.6vw, 2.15rem);
+    line-height: 1.15;
+    margin-bottom: 0.55rem;
+  }
+
+  .login-showcase p {
+    color: var(--ink-500);
+    line-height: 1.68;
+    margin-bottom: 0.9rem;
+  }
+
+  .login-feature-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0.48rem;
+  }
+
+  .login-feature-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.45rem;
+    color: var(--ink-700);
+    font-size: 0.9rem;
+  }
+
+  .login-feature-list i {
+    color: var(--accent-b);
+    margin-top: 0.16rem;
+  }
+
+  .login-panel {
+    border-radius: 0.95rem;
+    border: 1px solid rgba(11, 27, 54, 0.14);
+    background: #fff;
+    box-shadow: 0 14px 32px rgba(11, 27, 54, 0.1);
+    padding: 1rem;
+  }
+
+  .login-panel h2 {
+    margin-bottom: 0.25rem;
+  }
+
+  .login-subtitle {
+    color: var(--ink-500);
+    margin-bottom: 0.85rem;
+  }
+
+  .login-label {
+    font-weight: 700;
+    margin-bottom: 0.32rem;
+    display: block;
+  }
+
+  .login-input {
+    width: 100%;
+    border: 1px solid rgba(11, 27, 54, 0.24);
+    border-radius: 0.75rem;
+    padding: 0.62rem 0.7rem;
+    font-size: 0.95rem;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .login-input:focus {
+    outline: none;
+    border-color: var(--accent-a);
+    box-shadow: 0 0 0 0.16rem rgba(20, 134, 244, 0.2);
+  }
+
+  .login-alert {
+    border-radius: 0.78rem;
+    padding: 0.68rem 0.78rem;
+    margin-bottom: 0.78rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+  }
+
+  .login-alert-danger {
+    border: 1px solid rgba(214, 61, 61, 0.35);
+    background: rgba(214, 61, 61, 0.12);
+    color: #8a2727;
+  }
+
+  .login-alert-info {
+    border: 1px solid rgba(20, 134, 244, 0.3);
+    background: rgba(20, 134, 244, 0.12);
+    color: #0f4c86;
+  }
+
+  .login-cta {
+    width: 100%;
+    border: 0;
+    border-radius: 0.78rem;
+    padding: 0.72rem 1rem;
+    font-weight: 700;
+    color: #fff;
+    background: linear-gradient(135deg, #0c6eca, #198af8 55%, #2da5ff 100%);
+    box-shadow: 0 12px 24px rgba(20, 134, 244, 0.28);
+  }
+
+  .login-cta:hover,
+  .login-cta:focus-visible {
+    color: #fff;
+  }
+
+  .login-footnote {
+    margin-top: 0.72rem;
+    font-size: 0.8rem;
+    color: var(--ink-500);
+    text-align: center;
+  }
+
+  .login-footnote a {
+    font-weight: 700;
+    color: var(--accent-a);
+    text-decoration: none;
+  }
+
+  .login-footnote a:hover,
+  .login-footnote a:focus-visible {
+    text-decoration: underline;
+  }
+
+  @media (max-width: 991.98px) {
+    .login-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="login-page">
+  <section class="login-shell" aria-labelledby="login-page-title">
+    <div class="login-grid">
+      <div class="login-showcase">
+        <span class="login-kicker"><i class="fa-solid fa-lock"></i> Secure Access</span>
+        <h1 id="login-page-title">Welcome Back to DataViz Pro</h1>
+        <p>Sign in to continue your analysis workflow, manage your dataset library, and access team-ready visual insights.</p>
+
+        <ul class="login-feature-list" aria-label="login benefits">
+          <li><i class="fa-solid fa-check"></i><span>Access your saved datasets and curated store resources.</span></li>
+          <li><i class="fa-solid fa-check"></i><span>Continue dashboard work with context and metadata intact.</span></li>
+          <li><i class="fa-solid fa-check"></i><span>Use a secure session with role-aware permissions.</span></li>
+        </ul>
+      </div>
+
+      <div class="login-panel">
+        <h2 class="h4 fw-bold">Sign In</h2>
+        <p class="login-subtitle">Use your email and password to continue.</p>
+
+        {% if form.non_field_errors %}
+        <div class="login-alert login-alert-danger">{{ form.non_field_errors|join:', ' }}</div>
+        {% endif %}
+        {% if form.username.errors %}
+        <div class="login-alert login-alert-info">{{ form.username.errors|join:', ' }}</div>
+        {% endif %}
+        {% if form.password.errors %}
+        <div class="login-alert login-alert-info">{{ form.password.errors|join:', ' }}</div>
+        {% endif %}
+
+        {% if next %}
+          {% if user.is_authenticated %}
+          <div class="login-alert login-alert-info">Your account does not have access to this page.</div>
+          {% else %}
+          <div class="login-alert login-alert-info">Please login to continue.</div>
+          {% if '/datasets/store/' in next and '/download/' in next %}
+          <div class="login-alert login-alert-info">After login, you will see a clear Download button for your selected dataset.</div>
+          {% endif %}
+          {% endif %}
+        {% endif %}
+
+        <form method="post" action="{% url 'login' %}" novalidate>
+          {% csrf_token %}
+          <div class="mb-3">
+            <label for="id_username" class="login-label">Email</label>
+            <input type="email" name="username" class="login-input" id="id_username" value="{{ form.username.value|default:'' }}" autocomplete="email" required autofocus>
+          </div>
+          <div class="mb-3">
+            <label for="id_password" class="login-label">Password</label>
+            <input type="password" name="password" class="login-input" id="id_password" required>
+          </div>
+          <input type="hidden" name="next" value="{{ next|default:'/' }}">
+          <button type="submit" class="login-cta">Login to Continue</button>
+        </form>
+
+        <p class="login-footnote">Forgot your password? <a href="{% url 'password_reset' %}">Reset it securely</a>.</p>
+
+      </div>
+    </div>
+  </div>
+</section>
+</div>
+{% endblock %}

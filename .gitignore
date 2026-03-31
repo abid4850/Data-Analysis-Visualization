@@ -7,6 +7,8 @@ __pycache__/
 # Django / Flask
 *.log
 *.sqlite3
+.env
+*.env
 
 # Virtual environments
 venv/
@@ -15,6 +17,14 @@ env/
 
 # VS Code
 .vscode/
+
+# Python tooling caches
+.pytest_cache/
+.ruff_cache/
+
+# Local SEO audit artifacts
+seo/gsc_url_level_day*.csv
+seo/seo_day*_url_audit.csv
 
 # OS files
 .DS_Store

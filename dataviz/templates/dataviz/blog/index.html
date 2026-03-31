@@ -1,27 +1,509 @@
-{% extends 'dataviz/base.html' %}
+{% extends "dataviz/base.html" %}
+{% load static %}
 
-{% block title %}Blog{% endblock %}
+{% block title %}DataViz Pro Blog | Data Visualization Insights{% endblock %}
+
+{% block meta %}
+<meta name="description" content="Explore DataViz Pro blog insights on data visualization, dashboards, analytics workflows, and practical tips for students and business teams.">
+<meta name="keywords" content="data visualization blog, dashboard design tips, analytics insights, business reporting, student data projects">
+<meta name="author" content="Abid Hussain">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="{{ request.scheme }}://{{ request.get_host }}{{ request.path }}">
+{% endblock %}
+
+{% block extra_head %}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  .blog-pro {
+    --ink-900: #0c1f3f;
+    --ink-700: #27486f;
+    --ink-500: #4f6b8c;
+    --sky-500: #1797f7;
+    --mint-500: #08b89b;
+    --amber-500: #ffbe42;
+    --line-soft: rgba(12, 31, 63, 0.14);
+    --shadow-soft: 0 14px 34px rgba(12, 31, 63, 0.1);
+    --shadow-strong: 0 24px 46px rgba(12, 31, 63, 0.16);
+    font-family: 'Instrument Sans', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: var(--ink-900);
+  }
+
+  .blog-pro h1,
+  .blog-pro h2,
+  .blog-pro h3,
+  .blog-pro h4,
+  .blog-pro h5,
+  .blog-pro h6 {
+    font-family: 'Outfit', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    letter-spacing: -0.02em;
+  }
+
+  .blog-hero {
+    position: relative;
+    overflow: hidden;
+    border-radius: 1.25rem;
+    border: 1px solid var(--line-soft);
+    box-shadow: var(--shadow-strong);
+    background:
+      radial-gradient(115% 110% at 0% 0%, rgba(23, 151, 247, 0.22), transparent 55%),
+      radial-gradient(85% 95% at 100% 0%, rgba(255, 190, 66, 0.2), transparent 52%),
+      linear-gradient(128deg, #fbfdff 0%, #f1f8ff 44%, #f6fffd 100%);
+    padding: 1.6rem;
+    margin-bottom: 1.4rem;
+  }
+
+  .blog-kicker {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    border-radius: 999px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    padding: 0.38rem 0.78rem;
+    background: rgba(255, 255, 255, 0.76);
+    border: 1px solid var(--line-soft);
+    margin-bottom: 1rem;
+  }
+
+  .blog-hero h1 {
+    font-size: clamp(1.75rem, 3vw, 2.8rem);
+    line-height: 1.1;
+    margin-bottom: 0.8rem;
+  }
+
+  .blog-hero p {
+    color: var(--ink-500);
+    max-width: 64ch;
+    line-height: 1.65;
+    margin-bottom: 1.05rem;
+  }
+
+  .blog-pill-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .blog-pill {
+    border-radius: 999px;
+    border: 1px solid var(--line-soft);
+    background: rgba(255, 255, 255, 0.78);
+    color: var(--ink-700);
+    padding: 0.38rem 0.74rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+  }
+
+  .blog-hero-cta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.7rem;
+  }
+
+  .blog-btn-primary {
+    background: linear-gradient(135deg, #0b78d4, #1797f7);
+    color: #fff;
+    border: 0;
+    border-radius: 0.8rem;
+    padding: 0.7rem 1.15rem;
+    font-weight: 700;
+    box-shadow: 0 12px 26px rgba(11, 120, 212, 0.3);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .blog-btn-primary:hover,
+  .blog-btn-primary:focus-visible {
+    color: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 16px 28px rgba(11, 120, 212, 0.36);
+  }
+
+  .blog-btn-secondary {
+    border-radius: 0.8rem;
+    padding: 0.7rem 1.15rem;
+    font-weight: 700;
+    border: 1px solid rgba(12, 31, 63, 0.22);
+    color: var(--ink-900);
+    background: rgba(255, 255, 255, 0.72);
+    transition: transform 0.2s ease, background 0.2s ease;
+  }
+
+  .blog-btn-secondary:hover,
+  .blog-btn-secondary:focus-visible {
+    color: var(--ink-900);
+    background: #fff;
+    transform: translateY(-2px);
+  }
+
+  .blog-featured {
+    border-radius: 1.15rem;
+    border: 1px solid var(--line-soft);
+    background: #fff;
+    box-shadow: var(--shadow-soft);
+    overflow: hidden;
+    margin-bottom: 1.6rem;
+  }
+
+  .blog-featured-media {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    min-height: 260px;
+    background: linear-gradient(135deg, #eaf2ff, #f4fffd);
+  }
+
+  .blog-fallback-media {
+    min-height: 260px;
+    background: linear-gradient(135deg, #dbeaff, #e2fff8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #0f4f8f;
+    font-size: 2.2rem;
+  }
+
+  .blog-featured-body {
+    padding: 1.25rem 1.2rem;
+  }
+
+  .blog-meta {
+    color: var(--ink-500);
+    font-size: 0.84rem;
+    margin-bottom: 0.55rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+  }
+
+  .blog-meta span {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.28rem;
+  }
+
+  .blog-featured-title {
+    font-size: clamp(1.2rem, 1.9vw, 1.7rem);
+    margin-bottom: 0.55rem;
+  }
+
+  .blog-featured-title a,
+  .blog-card-title a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .blog-featured-title a:hover,
+  .blog-card-title a:hover {
+    color: #0b78d4;
+  }
+
+  .blog-featured-excerpt {
+    color: var(--ink-500);
+    line-height: 1.65;
+    margin-bottom: 0.9rem;
+  }
+
+  .blog-read-link {
+    font-weight: 700;
+    color: #0b78d4;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+
+  .blog-read-link:hover {
+    color: #0a5da5;
+  }
+
+  .blog-grid-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 1rem;
+  }
+
+  .blog-grid-head h2 {
+    margin: 0;
+  }
+
+  .blog-grid-head p {
+    margin: 0;
+    color: var(--ink-500);
+    max-width: 62ch;
+  }
+
+  .blog-card {
+    height: 100%;
+    border-radius: 1rem;
+    border: 1px solid var(--line-soft);
+    background: #fff;
+    box-shadow: var(--shadow-soft);
+    overflow: hidden;
+    transition: transform 0.22s ease, box-shadow 0.22s ease;
+  }
+
+  .blog-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 18px 34px rgba(12, 31, 63, 0.15);
+  }
+
+  .blog-card-media {
+    width: 100%;
+    height: 190px;
+    object-fit: cover;
+    background: linear-gradient(135deg, #ebf4ff, #f4fffd);
+    border-bottom: 1px solid var(--line-soft);
+  }
+
+  .blog-card-fallback {
+    width: 100%;
+    height: 190px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #0f4f8f;
+    font-size: 1.8rem;
+    background: linear-gradient(135deg, #dbeaff, #e4fff9);
+    border-bottom: 1px solid var(--line-soft);
+  }
+
+  .blog-card-body {
+    padding: 1rem;
+  }
+
+  .blog-card-title {
+    font-size: 1.08rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .blog-card-excerpt {
+    color: var(--ink-500);
+    font-size: 0.93rem;
+    line-height: 1.62;
+    margin-bottom: 0.82rem;
+  }
+
+  .blog-cta-banner {
+    margin-top: 1.65rem;
+    border-radius: 1rem;
+    border: 1px solid var(--line-soft);
+    background: linear-gradient(130deg, #ffffff 0%, #ecf5ff 45%, #f2fffb 100%);
+    box-shadow: var(--shadow-soft);
+    padding: 1.2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .blog-cta-banner h3 {
+    margin: 0 0 0.25rem;
+  }
+
+  .blog-cta-banner p {
+    margin: 0;
+    color: var(--ink-500);
+    max-width: 58ch;
+  }
+
+  .blog-empty {
+    border-radius: 1rem;
+    border: 1px dashed rgba(12, 31, 63, 0.26);
+    background: linear-gradient(145deg, #ffffff, #f3f8ff);
+    padding: 2.1rem 1.2rem;
+    text-align: center;
+  }
+
+  .blog-empty i {
+    font-size: 2rem;
+    color: #0b78d4;
+    margin-bottom: 0.6rem;
+  }
+
+  .blog-empty p {
+    color: var(--ink-500);
+    max-width: 54ch;
+    margin: 0.55rem auto 1rem;
+  }
+
+  .blog-reveal {
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 0.45s ease, transform 0.45s ease;
+  }
+
+  .blog-reveal.in-view {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  @media (max-width: 767.98px) {
+    .blog-hero {
+      padding: 1.2rem;
+    }
+
+    .blog-hero-cta .blog-btn-primary,
+    .blog-hero-cta .blog-btn-secondary {
+      width: 100%;
+      text-align: center;
+    }
+
+    .blog-featured-body,
+    .blog-card-body,
+    .blog-cta-banner {
+      padding: 1rem;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .blog-reveal,
+    .blog-card,
+    .blog-btn-primary,
+    .blog-btn-secondary {
+      transition: none;
+      transform: none;
+    }
+  }
+</style>
+{% endblock %}
 
 {% block content %}
-<section class="container my-5">
-  <h1 class="fw-bold mb-4">Blog Posts</h1>
-
-  {% for post in posts %}
-    <div class="card mb-3">
-      {% if post.image %}
-        <img src="{{ post.image.url }}" class="card-img-top" alt="{{ post.title }}">
-      {% endif %}
-      <div class="card-body">
-        <h5 class="card-title">
-          <a href="{% url 'dataviz:blog_dynamic' post.slug %}" class="text-decoration-none">{{ post.title }}</a>
-        </h5>
-        <p class="card-text">{{ post.created_at|date:"M d, Y" }}</p>
-        <p class="card-text">{{ post.content|truncatewords:20|safe }}</p>
-        <a href="{% url 'dataviz:blog_dynamic' post.slug %}" class="btn btn-primary">Read More</a>
-      </div>
+<div class="blog-pro">
+  <section class="blog-hero blog-reveal">
+    <span class="blog-kicker"><i class="fa-solid fa-pen-nib"></i> DataViz Pro Editorial</span>
+    <h1>Insights that turn raw data into clear business and academic decisions</h1>
+    <p>
+      Learn practical frameworks, chart strategies, and dashboard thinking that help you move from dataset to action faster.
+      Each article is built to be useful, scannable, and implementation-ready.
+    </p>
+    <div class="blog-pill-row">
+      <span class="blog-pill">Dashboard UX</span>
+      <span class="blog-pill">Data Storytelling</span>
+      <span class="blog-pill">Analytics Workflows</span>
+      <span class="blog-pill">Student to Team Playbooks</span>
     </div>
-  {% empty %}
-    <p>No blog posts yet.</p>
-  {% endfor %}
-</section>
+    <div class="blog-hero-cta">
+      <a href="{% url 'dataviz:data_analysis' %}" class="btn blog-btn-primary">Start Free Analysis</a>
+      <a href="{% url 'dataviz:data_visualization_dashboard' %}" class="btn blog-btn-secondary">Explore Dashboard Examples</a>
+    </div>
+  </section>
+
+  {% if posts %}
+    {% for post in posts %}
+      {% if forloop.first %}
+        <article class="blog-featured blog-reveal" aria-labelledby="featured-post-title">
+          <div class="row g-0 align-items-stretch">
+            <div class="col-lg-5">
+              {% if post.image %}
+                <img src="{{ post.image.url }}" class="blog-featured-media" alt="{{ post.title }}" loading="lazy">
+              {% else %}
+                <div class="blog-fallback-media" aria-hidden="true"><i class="fa-solid fa-chart-line"></i></div>
+              {% endif %}
+            </div>
+            <div class="col-lg-7">
+              <div class="blog-featured-body">
+                <div class="blog-meta">
+                  <span><i class="fa-regular fa-calendar"></i> {{ post.created_at|date:"M d, Y" }}</span>
+                  <span><i class="fa-regular fa-clock"></i> Featured article</span>
+                </div>
+                <h2 class="blog-featured-title" id="featured-post-title">
+                  <a href="{% url 'dataviz:blog_dynamic' post.slug %}">{{ post.title }}</a>
+                </h2>
+                <p class="blog-featured-excerpt">{{ post.content|striptags|truncatewords:50 }}</p>
+                <a href="{% url 'dataviz:blog_dynamic' post.slug %}" class="blog-read-link">
+                  Read featured insight <i class="fa-solid fa-arrow-right"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+        </article>
+      {% endif %}
+    {% endfor %}
+
+    <section class="blog-reveal" aria-labelledby="latest-insights-title">
+      <div class="blog-grid-head">
+        <div>
+          <h2 id="latest-insights-title">Latest Insights</h2>
+          <p>Browse practical articles for students, analysts, and business teams who need better visual decisions.</p>
+        </div>
+      </div>
+
+      <div class="row g-4">
+        {% for post in posts %}
+          {% if not forloop.first %}
+            <div class="col-md-6 col-xl-4 blog-reveal">
+              <article class="blog-card h-100" aria-labelledby="post-title-{{ post.slug }}">
+                {% if post.image %}
+                  <img src="{{ post.image.url }}" class="blog-card-media" alt="{{ post.title }}" loading="lazy">
+                {% else %}
+                  <div class="blog-card-fallback" aria-hidden="true"><i class="fa-solid fa-chart-column"></i></div>
+                {% endif %}
+                <div class="blog-card-body">
+                  <div class="blog-meta mb-2">
+                    <span><i class="fa-regular fa-calendar"></i> {{ post.created_at|date:"M d, Y" }}</span>
+                  </div>
+                  <h3 id="post-title-{{ post.slug }}" class="blog-card-title">
+                    <a href="{% url 'dataviz:blog_dynamic' post.slug %}">{{ post.title }}</a>
+                  </h3>
+                  <p class="blog-card-excerpt">{{ post.content|striptags|truncatewords:24 }}</p>
+                  <a href="{% url 'dataviz:blog_dynamic' post.slug %}" class="blog-read-link">Read article <i class="fa-solid fa-arrow-right"></i></a>
+                </div>
+              </article>
+            </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+    </section>
+
+    <section class="blog-cta-banner blog-reveal" aria-label="analysis call to action">
+      <div>
+        <h3>Ready to apply these insights to your own dataset?</h3>
+        <p>Move from reading to execution. Upload your data, run instant analysis, and build decision-ready visuals now.</p>
+      </div>
+      <a href="{% url 'dataviz:data_analysis' %}" class="btn blog-btn-primary">Launch Data Analysis</a>
+    </section>
+  {% else %}
+    <section class="blog-empty blog-reveal">
+      <i class="fa-solid fa-newspaper"></i>
+      <h2 class="h4 fw-bold">No blog posts published yet</h2>
+      <p>
+        New insights are on the way. In the meantime, you can start analyzing your own data and build interactive dashboards.
+      </p>
+      <a href="{% url 'dataviz:data_analysis' %}" class="btn blog-btn-primary">Start Analysis Instead</a>
+    </section>
+  {% endif %}
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+  (function () {
+    const revealItems = document.querySelectorAll('.blog-reveal');
+    if (!revealItems.length) return;
+
+    const observer = new IntersectionObserver(
+      function(entries, revealObserver) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('in-view');
+            revealObserver.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.16 }
+    );
+
+    revealItems.forEach(function(item) { observer.observe(item); });
+  })();
+</script>
 {% endblock %}

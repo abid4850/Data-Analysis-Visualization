@@ -2,7 +2,7 @@ from django.urls import path
 from django.contrib.sitemaps.views import sitemap
 
 from . import views
-from dataviz.sitemaps import StaticViewSitemap, ProgrammaticSEOSitemap
+from dataviz.sitemaps import StaticViewSitemap, ProgrammaticSEOSitemap, BlogPostSitemap
 from dataviz.seo.views import programmatic_seo_page
 
 app_name = "dataviz"
@@ -11,6 +11,7 @@ app_name = "dataviz"
 sitemaps = {
     "static": StaticViewSitemap,
     "seo": ProgrammaticSEOSitemap,
+    "blog": BlogPostSitemap,
 }
 
 urlpatterns = [
@@ -22,6 +23,7 @@ urlpatterns = [
     # Core pages
     path("about/", views.about, name="about"),
     path("datasets/", views.datasets, name="datasets"),
+    path("datasets/store/<int:dataset_id>/download/", views.dataset_store_download, name="dataset_store_download"),
     path("datasets/global-sales-2024/", views.global_sales_2024, name="global_sales_2024"),
     path("datasets/student-performance-data/", views.student_performance_data, name="student_performance_data"),
 
@@ -57,6 +59,10 @@ urlpatterns = [
 
     # Sitemap
     path("sitemap.xml", sitemap, {"sitemaps": sitemaps}, name="sitemap"),
+
+    # Monitoring
+    path("health/", views.health_check, name="health_check"),
+    path("newsletter/subscribe/", views.newsletter_subscribe, name="newsletter_subscribe"),
 
     # Programmatic SEO (must be last)
     path("<slug:slug>/", programmatic_seo_page, name="programmatic_seo"),

@@ -4,6 +4,31 @@
 
 {% block meta %}
 <meta name="description" content="{{ page.description }}">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="{{ request.scheme }}://{{ request.get_host }}{{ request.path }}">
+{% endblock %}
+
+{% block extra_head %}
+{% if page.is_priority and page.faqs %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {% for faq in page.faqs %}
+    {
+      "@type": "Question",
+      "name": "{{ faq.question|escapejs }}",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "{{ faq.answer|escapejs }}"
+      }
+    }{% if not forloop.last %},{% endif %}
+    {% endfor %}
+  ]
+}
+</script>
+{% endif %}
 {% endblock %}
 
 {% block content %}
@@ -14,6 +39,56 @@
   <p class="lead">
     {{ page.intro }}
   </p>
+
+  {% if page.is_priority %}
+  <div class="alert alert-primary" role="note">
+    <strong>Pro insight:</strong> {{ page.value_proposition }}
+  </div>
+
+  <h2>Business Questions This Page Can Answer</h2>
+  <ul>
+    {% for question in page.business_questions %}
+      <li>{{ question }}</li>
+    {% endfor %}
+  </ul>
+
+  <h2>Suggested KPI Pack</h2>
+  <ul>
+    {% for kpi in page.kpi_ideas %}
+      <li>{{ kpi }}</li>
+    {% endfor %}
+  </ul>
+
+  <h2>Recommended Dataset Columns</h2>
+  <ul>
+    {% for column in page.recommended_columns %}
+      <li>{{ column }}</li>
+    {% endfor %}
+  </ul>
+
+  <h2>Fast Workflow</h2>
+  <ol>
+    {% for step in page.workflow_steps %}
+      <li>{{ step }}</li>
+    {% endfor %}
+  </ol>
+
+  <h2>Frequently Asked Questions</h2>
+  <div class="accordion" id="faqAccordion">
+    {% for faq in page.faqs %}
+    <div class="accordion-item">
+      <h3 class="accordion-header" id="faq-heading-{{ forloop.counter }}">
+        <button class="accordion-button {% if not forloop.first %}collapsed{% endif %}" type="button" data-bs-toggle="collapse" data-bs-target="#faq-collapse-{{ forloop.counter }}" aria-expanded="{% if forloop.first %}true{% else %}false{% endif %}" aria-controls="faq-collapse-{{ forloop.counter }}">
+          {{ faq.question }}
+        </button>
+      </h3>
+      <div id="faq-collapse-{{ forloop.counter }}" class="accordion-collapse collapse {% if forloop.first %}show{% endif %}" aria-labelledby="faq-heading-{{ forloop.counter }}" data-bs-parent="#faqAccordion">
+        <div class="accordion-body">{{ faq.answer }}</div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
 
   <h2>Common Use Cases</h2>
   <ul>
@@ -28,6 +103,18 @@
     <li>Select chart type</li>
     <li>Explore insights instantly</li>
   </ol>
+  {% endif %}
+
+  {% if page.related_pages %}
+  <h2>Related Guides</h2>
+  <ul>
+    {% for related in page.related_pages %}
+      <li>
+        <a href="{% url 'dataviz:programmatic_seo' slug=related.slug %}">{{ related.title }}</a>
+      </li>
+    {% endfor %}
+  </ul>
+  {% endif %}
 
   <a href="/online-data-visualization/" class="btn btn-primary btn-lg mt-3">
     Upload Data & Visualize

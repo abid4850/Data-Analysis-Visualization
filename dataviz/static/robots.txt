@@ -1,4 +1,5 @@
 User-agent: *
 Allow: /
+Disallow: /analysis/
 
-Sitemap: https://yourdomain.com/sitemap.xml
+Sitemap: /sitemap.xml

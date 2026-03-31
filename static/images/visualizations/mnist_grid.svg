@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="600" height="360" viewBox="0 0 600 360">
+  <rect width="100%" height="100%" fill="#fafafa"/>
+  <text x="20" y="24" font-size="18" fill="#333">MNIST — Sample digit grid</text>
+  <g transform="translate(20,40)" stroke="#ddd">
+    <!-- small 5x3 grid of squares -->
+    {% raw %}
+    <g>
+      <rect x="0" y="0" width="40" height="40" fill="#000"/>
+      <rect x="50" y="0" width="40" height="40" fill="#222"/>
+      <rect x="100" y="0" width="40" height="40" fill="#111"/>
+      <rect x="150" y="0" width="40" height="40" fill="#000"/>
+      <rect x="200" y="0" width="40" height="40" fill="#333"/>
+    </g>
+    {% endraw %}
+  </g>
+</svg>

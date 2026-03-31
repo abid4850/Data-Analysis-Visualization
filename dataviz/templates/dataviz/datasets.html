@@ -1,0 +1,1318 @@
+{% extends "dataviz/base.html" %}
+{% load static %}
+
+{% block title %}Upload Dataset | DataViz Pro{% endblock %}
+{% block og_title %}Upload Dataset | DataViz Pro{% endblock %}
+{% block twitter_title %}Upload Dataset | DataViz Pro{% endblock %}
+{% block og_description %}Upload your dataset and add context before starting analysis in DataViz Pro.{% endblock %}
+{% block twitter_description %}Securely upload datasets with explanation notes and continue to interactive analysis.{% endblock %}
+
+{% block meta %}
+<meta name="description" content="Upload your dataset securely and provide a quick explanation before analyzing it in DataViz Pro.">
+<meta name="keywords" content="dataset upload, data analysis, csv upload, xlsx upload, dataviz pro">
+<meta name="author" content="Abid Hussain">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="{{ request.scheme }}://{{ request.get_host }}{{ request.path }}">
+{% endblock %}
+
+{% block extra_head %}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+	.dataset-page {
+		--ink-900: #091731;
+		--ink-700: #1f3f69;
+		--ink-500: #4f6f95;
+		--sky-500: #198af8;
+		--mint-500: #0aa98f;
+		--amber-500: #ea9828;
+		--line-soft: rgba(9, 23, 49, 0.13);
+		--shadow-soft: 0 18px 36px rgba(9, 23, 49, 0.1);
+		--shadow-strong: 0 30px 58px rgba(9, 23, 49, 0.18);
+		color: var(--ink-900);
+		font-family: 'Plus Jakarta Sans', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+		background:
+			radial-gradient(130% 96% at 0% 0%, rgba(25, 138, 248, 0.13), transparent 60%),
+			radial-gradient(108% 94% at 100% 0%, rgba(10, 169, 143, 0.12), transparent 56%),
+			linear-gradient(180deg, #f7fbff 0%, #f5fcff 52%, #f9fffd 100%);
+		padding: 0.55rem 0 0.3rem;
+		position: relative;
+	}
+
+	.dataset-page::before {
+		content: "";
+		position: absolute;
+		inset: 0;
+		background-image: radial-gradient(rgba(9, 23, 49, 0.05) 0.8px, transparent 0.8px);
+		background-size: 18px 18px;
+		opacity: 0.3;
+		pointer-events: none;
+	}
+
+	.dataset-shell {
+		display: grid;
+		gap: 1rem;
+		position: relative;
+		z-index: 1;
+	}
+
+	.dataset-page h1,
+	.dataset-page h2,
+	.dataset-page h3,
+	.dataset-page h4,
+	.dataset-page h5 {
+		font-family: 'Syne', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+		letter-spacing: -0.02em;
+	}
+
+	.dataset-hero {
+		position: relative;
+		overflow: hidden;
+		border-radius: 1.25rem;
+		border: 1px solid var(--line-soft);
+		background:
+			radial-gradient(115% 120% at 0% 0%, rgba(25, 138, 248, 0.26), transparent 54%),
+			radial-gradient(80% 90% at 100% 0%, rgba(10, 169, 143, 0.24), transparent 52%),
+			linear-gradient(124deg, #fcfdff 0%, #eff8ff 45%, #f3fff9 100%);
+		box-shadow: var(--shadow-strong);
+		padding: 1.45rem 1.45rem 1.2rem;
+	}
+
+	.dataset-hero::before {
+		content: "";
+		position: absolute;
+		left: -100px;
+		bottom: -120px;
+		width: 280px;
+		height: 280px;
+		border-radius: 50%;
+		background: radial-gradient(circle, rgba(25, 138, 248, 0.22) 0%, rgba(25, 138, 248, 0) 70%);
+		pointer-events: none;
+	}
+
+	.dataset-hero::after {
+		content: "";
+		position: absolute;
+		right: -50px;
+		top: -55px;
+		width: 190px;
+		height: 190px;
+		border-radius: 50%;
+		background: radial-gradient(circle, rgba(223, 143, 31, 0.24) 0%, rgba(223, 143, 31, 0) 70%);
+		pointer-events: none;
+	}
+
+	.dataset-hero-grid {
+		display: grid;
+		grid-template-columns: minmax(0, 1.5fr) minmax(260px, 1fr);
+		gap: 0.95rem;
+		align-items: start;
+	}
+
+	.dataset-nav-strip {
+		display: inline-flex;
+		flex-wrap: wrap;
+		gap: 0.45rem;
+		margin-bottom: 0.95rem;
+	}
+
+	.dataset-theme-switch {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.36rem;
+		margin-bottom: 0.9rem;
+		padding: 0.24rem 0.28rem;
+		border-radius: 999px;
+		border: 1px solid rgba(9, 23, 49, 0.16);
+		background: rgba(255, 255, 255, 0.84);
+		backdrop-filter: blur(8px);
+	}
+
+	.dataset-theme-label {
+		font-size: 0.72rem;
+		font-weight: 800;
+		letter-spacing: 0.05em;
+		text-transform: uppercase;
+		color: var(--ink-500);
+		padding: 0 0.28rem;
+	}
+
+	.dataset-theme-btn {
+		text-decoration: none;
+		font-size: 0.76rem;
+		font-weight: 700;
+		letter-spacing: 0.01em;
+		padding: 0.32rem 0.64rem;
+		border-radius: 999px;
+		color: var(--ink-700);
+		border: 1px solid transparent;
+	}
+
+	.dataset-theme-btn:hover {
+		color: var(--ink-900);
+		background: rgba(255, 255, 255, 0.9);
+	}
+
+	.dataset-theme-btn.is-active {
+		background: linear-gradient(135deg, #0c6eca, #198af8);
+		color: #fff;
+		border-color: transparent;
+	}
+
+	.dataset-theme-note {
+		margin: -0.25rem 0 0.55rem;
+		font-size: 0.78rem;
+		color: var(--ink-500);
+	}
+
+	.dataset-nav-link {
+		text-decoration: none;
+		border-radius: 999px;
+		border: 1px solid var(--line-soft);
+		background: rgba(255, 255, 255, 0.84);
+		backdrop-filter: blur(6px);
+		color: var(--ink-700);
+		padding: 0.38rem 0.75rem;
+		font-size: 0.8rem;
+		font-weight: 700;
+		letter-spacing: 0.02em;
+	}
+
+	.dataset-nav-link:hover {
+		color: var(--ink-900);
+		background: #fff;
+	}
+
+	.dataset-nav-link.is-active {
+		background: linear-gradient(135deg, #0b78d4, #1692f4);
+		color: #fff;
+		border-color: transparent;
+	}
+
+	.dataset-badge {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.4rem;
+		border-radius: 999px;
+		border: 1px solid rgba(25, 138, 248, 0.25);
+		background: rgba(255, 255, 255, 0.86);
+		padding: 0.36rem 0.76rem;
+		text-transform: uppercase;
+		letter-spacing: 0.06em;
+		font-size: 0.76rem;
+		font-weight: 800;
+		margin-bottom: 0.85rem;
+	}
+
+	.dataset-hero h1 {
+		font-size: clamp(1.65rem, 2.95vw, 2.72rem);
+		line-height: 1.14;
+		margin-bottom: 0.65rem;
+	}
+
+	.dataset-hero p {
+		color: var(--ink-500);
+		margin-bottom: 0.72rem;
+		max-width: 70ch;
+		line-height: 1.72;
+	}
+
+	.dataset-flow-pills {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.42rem;
+	}
+
+	.dataset-pill {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.35rem;
+		border-radius: 999px;
+		padding: 0.33rem 0.66rem;
+		font-size: 0.76rem;
+		font-weight: 700;
+		letter-spacing: 0.02em;
+		border: 1px solid rgba(9, 23, 49, 0.18);
+		background: rgba(255, 255, 255, 0.86);
+		color: var(--ink-700);
+	}
+
+	.dataset-hero-metrics {
+		display: grid;
+		gap: 0.48rem;
+	}
+
+	.dataset-metric-card {
+		border-radius: 0.9rem;
+		border: 1px solid rgba(9, 23, 49, 0.16);
+		background: linear-gradient(168deg, rgba(255, 255, 255, 0.9), rgba(241, 249, 255, 0.9));
+		padding: 0.66rem 0.72rem;
+		box-shadow: 0 14px 26px rgba(9, 23, 49, 0.1);
+	}
+
+	.dataset-metric-value {
+		display: block;
+		font-family: 'Syne', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+		font-size: 1.15rem;
+		font-weight: 800;
+		color: var(--ink-900);
+		letter-spacing: -0.03em;
+	}
+
+	.dataset-metric-label {
+		display: block;
+		font-size: 0.78rem;
+		font-weight: 700;
+		letter-spacing: 0.03em;
+		text-transform: uppercase;
+		color: var(--ink-500);
+	}
+
+	.dataset-grid {
+		display: grid;
+		grid-template-columns: minmax(0, 1.35fr) minmax(0, 0.85fr);
+		gap: 1rem;
+	}
+
+	.dataset-proof-grid {
+		display: grid;
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+		gap: 0.7rem;
+	}
+
+	.dataset-proof-card {
+		border-radius: 0.98rem;
+		border: 1px solid rgba(9, 23, 49, 0.14);
+		background: linear-gradient(162deg, #ffffff, #f3faff);
+		box-shadow: 0 12px 24px rgba(9, 23, 49, 0.08);
+		padding: 0.72rem 0.8rem;
+	}
+
+	.dataset-proof-kicker {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.28rem;
+		font-size: 0.73rem;
+		font-weight: 700;
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+		color: var(--sky-500);
+	}
+
+	.dataset-proof-card strong {
+		display: block;
+		font-family: 'Syne', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+		font-size: 1.02rem;
+		margin-top: 0.25rem;
+		letter-spacing: -0.02em;
+	}
+
+	.dataset-proof-card p {
+		margin: 0.25rem 0 0;
+		font-size: 0.84rem;
+		color: var(--ink-500);
+		line-height: 1.55;
+	}
+
+	.dataset-card {
+		border-radius: 1rem;
+		border: 1px solid var(--line-soft);
+		background: linear-gradient(170deg, rgba(255, 255, 255, 0.98) 0%, rgba(251, 253, 255, 0.95) 100%);
+		box-shadow: var(--shadow-soft);
+		padding: 1rem;
+		transition: transform 0.24s ease, box-shadow 0.24s ease, border-color 0.24s ease;
+		backdrop-filter: blur(4px);
+	}
+
+	.dataset-card:hover {
+		transform: translateY(-3px);
+		box-shadow: 0 22px 38px rgba(12, 31, 63, 0.14);
+		border-color: rgba(12, 31, 63, 0.2);
+	}
+
+	.dataset-card h2 {
+		margin-bottom: 0.75rem;
+	}
+
+	.dataset-label {
+		font-weight: 700;
+		margin-bottom: 0.35rem;
+		display: block;
+	}
+
+	.dataset-input,
+	.dataset-textarea {
+		border: 1px solid rgba(12, 31, 63, 0.22);
+		border-radius: 0.78rem;
+		width: 100%;
+		padding: 0.62rem 0.74rem;
+		font-size: 0.95rem;
+		transition: border-color 0.2s ease, box-shadow 0.2s ease;
+	}
+
+	.dataset-textarea {
+		min-height: 150px;
+		resize: vertical;
+	}
+
+	.dataset-input:focus,
+	.dataset-textarea:focus {
+		outline: none;
+		border-color: #1692f4;
+		box-shadow: 0 0 0 0.16rem rgba(22, 146, 244, 0.2);
+	}
+
+	.dataset-help {
+		color: var(--ink-500);
+		font-size: 0.84rem;
+		margin-top: 0.35rem;
+	}
+
+	.dataset-submit-row {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.6rem;
+		margin-top: 0.95rem;
+	}
+
+	.dataset-btn-primary {
+		background: linear-gradient(135deg, #0c6eca, #198af8 55%, #23a9ff 100%);
+		color: #fff;
+		border: 0;
+		border-radius: 0.78rem;
+		padding: 0.7rem 1.08rem;
+		font-weight: 700;
+		box-shadow: 0 11px 24px rgba(11, 120, 212, 0.28);
+		transition: transform 0.2s ease, box-shadow 0.2s ease;
+	}
+
+	.dataset-btn-primary:hover,
+	.dataset-btn-primary:focus-visible {
+		color: #fff;
+		transform: translateY(-1px);
+		box-shadow: 0 14px 26px rgba(11, 120, 212, 0.32);
+	}
+
+	.dataset-btn-secondary {
+		border-radius: 0.78rem;
+		padding: 0.7rem 1.08rem;
+		font-weight: 700;
+		border: 1px solid rgba(12, 31, 63, 0.24);
+		color: var(--ink-900);
+		background: rgba(255, 255, 255, 0.74);
+		text-decoration: none;
+	}
+
+	.dataset-btn-secondary:hover {
+		color: var(--ink-900);
+		background: #fff;
+	}
+
+	.dataset-alert {
+		border-radius: 0.8rem;
+		padding: 0.72rem 0.82rem;
+		margin-bottom: 0.85rem;
+		font-weight: 600;
+	}
+
+	.dataset-alert-success {
+		border: 1px solid rgba(8, 185, 157, 0.35);
+		background: rgba(8, 185, 157, 0.12);
+		color: #0a6b59;
+	}
+
+	.dataset-alert-error {
+		border: 1px solid rgba(227, 86, 86, 0.35);
+		background: rgba(227, 86, 86, 0.12);
+		color: #8a2d2d;
+	}
+
+	.dataset-side-list {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		display: grid;
+		gap: 0.45rem;
+	}
+
+	.dataset-side-list li {
+		display: flex;
+		align-items: flex-start;
+		gap: 0.4rem;
+		color: var(--ink-700);
+		font-size: 0.9rem;
+	}
+
+	.dataset-side-list i {
+		color: var(--mint-500);
+		margin-top: 0.18rem;
+	}
+
+	.dataset-format-grid {
+		display: grid;
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+		gap: 0.45rem;
+		margin-top: 0.65rem;
+	}
+
+	.dataset-format-chip {
+		border-radius: 999px;
+		border: 1px solid var(--line-soft);
+		background: #f4f9ff;
+		text-align: center;
+		padding: 0.28rem 0.4rem;
+		font-size: 0.78rem;
+		font-weight: 700;
+		color: var(--ink-700);
+	}
+
+	.dataset-current {
+		border-radius: 0.84rem;
+		border: 1px dashed rgba(12, 31, 63, 0.28);
+		background: linear-gradient(135deg, #ffffff, #f3f9ff);
+		padding: 0.7rem;
+		margin-top: 0.9rem;
+	}
+
+	.dataset-current b {
+		display: block;
+		margin-bottom: 0.2rem;
+	}
+
+	.dataset-current p {
+		color: var(--ink-500);
+		margin: 0;
+		font-size: 0.88rem;
+	}
+
+	.dataset-store-wrap {
+		margin-top: 0.1rem;
+	}
+
+	.dataset-store-head {
+		display: flex;
+		justify-content: space-between;
+		align-items: end;
+		gap: 0.8rem;
+		flex-wrap: wrap;
+		margin-bottom: 0.8rem;
+	}
+
+	.dataset-store-head p {
+		color: var(--ink-500);
+		margin: 0;
+	}
+
+	.dataset-store-head-meta {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.35rem;
+		margin-top: 0.46rem;
+	}
+
+	.dataset-store-chip {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.3rem;
+		border-radius: 999px;
+		padding: 0.24rem 0.54rem;
+		font-size: 0.74rem;
+		font-weight: 700;
+		color: var(--ink-700);
+		background: rgba(255, 255, 255, 0.88);
+		border: 1px solid rgba(12, 31, 63, 0.15);
+	}
+
+	.dataset-store-tools {
+		margin-bottom: 0.9rem;
+		padding: 0.75rem;
+		border-radius: 0.85rem;
+		border: 1px solid var(--line-soft);
+		background: linear-gradient(145deg, #ffffff, #f3f9ff);
+		box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.85);
+	}
+
+	.dataset-store-tools-grid {
+		display: grid;
+		grid-template-columns: 1.35fr repeat(4, minmax(0, 1fr)) auto;
+		gap: 0.55rem;
+		align-items: end;
+	}
+
+	.dataset-tool-label {
+		display: block;
+		font-size: 0.76rem;
+		font-weight: 700;
+		letter-spacing: 0.04em;
+		text-transform: uppercase;
+		color: var(--ink-500);
+		margin-bottom: 0.22rem;
+	}
+
+	.dataset-tool-input,
+	.dataset-tool-select {
+		width: 100%;
+		border-radius: 0.68rem;
+		border: 1px solid rgba(12, 31, 63, 0.22);
+		padding: 0.48rem 0.62rem;
+		font-size: 0.88rem;
+		background: #fff;
+	}
+
+	.dataset-tool-actions {
+		display: flex;
+		gap: 0.4rem;
+	}
+
+	.dataset-tool-actions .btn,
+	.dataset-tool-reset {
+		white-space: nowrap;
+		border-radius: 0.68rem;
+		font-size: 0.83rem;
+		font-weight: 700;
+	}
+
+	.dataset-tool-reset {
+		text-decoration: none;
+		padding: 0.45rem 0.72rem;
+		border: 1px solid rgba(12, 31, 63, 0.2);
+		background: #fff;
+		color: var(--ink-700);
+	}
+
+	.dataset-tool-reset:hover {
+		color: var(--ink-900);
+		background: #f6fbff;
+	}
+
+	.dataset-store-count {
+		border-radius: 999px;
+		border: 1px solid var(--line-soft);
+		background: #f1f8ff;
+		padding: 0.28rem 0.68rem;
+		font-size: 0.82rem;
+		font-weight: 700;
+		color: var(--ink-700);
+	}
+
+	.dataset-store-grid {
+		display: grid;
+		grid-template-columns: minmax(0, 1fr) minmax(0, 1.45fr);
+		gap: 0.9rem;
+	}
+
+	.dataset-store-upload {
+		border-radius: 0.9rem;
+		border: 1px solid var(--line-soft);
+		background: linear-gradient(145deg, #ffffff, #f4faff);
+		padding: 0.85rem;
+	}
+
+	.dataset-store-list {
+		display: grid;
+		gap: 0.68rem;
+	}
+
+	.dataset-store-item {
+		position: relative;
+		overflow: hidden;
+		border-radius: 0.86rem;
+		border: 1px solid var(--line-soft);
+		background: linear-gradient(170deg, #ffffff 0%, #fcfdff 100%);
+		padding: 0.8rem;
+		display: flex;
+		justify-content: space-between;
+		align-items: start;
+		gap: 0.8rem;
+		transition: transform 0.22s ease, box-shadow 0.22s ease;
+	}
+
+	.dataset-store-item:hover {
+		transform: translateY(-2px);
+		box-shadow: 0 15px 30px rgba(12, 31, 63, 0.11);
+	}
+
+	.dataset-store-item::before {
+		content: "";
+		position: absolute;
+		left: 0;
+		top: 0;
+		bottom: 0;
+		width: 3px;
+		background: linear-gradient(180deg, #198af8, #0aa98f);
+		opacity: 0.75;
+	}
+
+	.dataset-store-item h3 {
+		font-size: 0.98rem;
+		margin-bottom: 0.3rem;
+	}
+
+	.dataset-store-item p {
+		margin: 0;
+		color: var(--ink-500);
+		font-size: 0.88rem;
+		line-height: 1.55;
+	}
+
+	.dataset-store-meta {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.55rem;
+		margin-top: 0.45rem;
+		color: var(--ink-500);
+		font-size: 0.78rem;
+	}
+
+	.dataset-store-meta span {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.28rem;
+	}
+
+	.dataset-store-tags {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.35rem;
+		margin-top: 0.5rem;
+	}
+
+	.dataset-tag-chip {
+		border-radius: 999px;
+		border: 1px solid rgba(25, 138, 248, 0.26);
+		background: linear-gradient(145deg, #edf6ff, #e6fff8);
+		padding: 0.22rem 0.56rem;
+		font-size: 0.74rem;
+		font-weight: 700;
+		color: var(--ink-700);
+		text-transform: uppercase;
+		letter-spacing: 0.03em;
+	}
+
+	.dataset-store-action {
+		min-width: 125px;
+		display: flex;
+		justify-content: end;
+	}
+
+	.dataset-download-btn {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.34rem;
+		text-decoration: none;
+		border-radius: 0.72rem;
+		padding: 0.48rem 0.76rem;
+		font-size: 0.83rem;
+		font-weight: 700;
+		background: linear-gradient(135deg, #198af8, #2a79ff 52%, #42a8ff 100%);
+		color: #fff;
+		border: 0;
+	}
+
+	.dataset-download-btn:hover {
+		color: #fff;
+	}
+
+	.dataset-login-chip {
+		text-decoration: none;
+		border-radius: 0.72rem;
+		padding: 0.42rem 0.68rem;
+		font-size: 0.8rem;
+		font-weight: 700;
+		background: #eef6ff;
+		border: 1px solid rgba(12, 31, 63, 0.2);
+		color: var(--ink-700);
+	}
+
+	.dataset-login-chip:hover {
+		color: var(--ink-900);
+		background: #e7f2ff;
+	}
+
+	.dataset-store-pagination {
+		display: flex;
+		justify-content: center;
+		flex-wrap: wrap;
+		gap: 0.38rem;
+		margin-top: 0.95rem;
+	}
+
+	.dataset-page-link {
+		text-decoration: none;
+		border-radius: 0.65rem;
+		padding: 0.35rem 0.6rem;
+		font-size: 0.82rem;
+		font-weight: 700;
+		border: 1px solid rgba(12, 31, 63, 0.2);
+		background: #fff;
+		color: var(--ink-700);
+	}
+
+	.dataset-page-link:hover {
+		color: var(--ink-900);
+		background: #f4f9ff;
+	}
+
+	.dataset-page-link.is-active {
+		background: linear-gradient(135deg, #0b78d4, #1692f4);
+		border-color: transparent;
+		color: #fff;
+	}
+
+	.dataset-page.theme-editorial {
+		--ink-900: #2d1a12;
+		--ink-700: #5f3f2e;
+		--ink-500: #866251;
+		--sky-500: #c15d2d;
+		--mint-500: #8c8a32;
+		--line-soft: rgba(45, 26, 18, 0.14);
+		--shadow-soft: 0 16px 34px rgba(45, 26, 18, 0.12);
+		--shadow-strong: 0 28px 52px rgba(45, 26, 18, 0.18);
+		background:
+			radial-gradient(120% 95% at 0% 0%, rgba(210, 115, 60, 0.18), transparent 58%),
+			radial-gradient(120% 95% at 100% 0%, rgba(201, 166, 82, 0.18), transparent 62%),
+			linear-gradient(180deg, #fffaf4 0%, #fff6ec 52%, #fffdf7 100%);
+	}
+
+	.dataset-page.theme-editorial::before {
+		background-image: linear-gradient(to right, rgba(45, 26, 18, 0.045) 1px, transparent 1px),
+			linear-gradient(to bottom, rgba(45, 26, 18, 0.045) 1px, transparent 1px);
+		background-size: 22px 22px;
+		opacity: 0.35;
+	}
+
+	.dataset-page.theme-editorial h1,
+	.dataset-page.theme-editorial h2,
+	.dataset-page.theme-editorial h3,
+	.dataset-page.theme-editorial h4,
+	.dataset-page.theme-editorial h5,
+	.dataset-page.theme-editorial .dataset-proof-card strong {
+		font-family: 'Plus Jakarta Sans', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+	}
+
+	.dataset-page.theme-editorial .dataset-hero {
+		background:
+			radial-gradient(100% 100% at 0% 0%, rgba(201, 93, 45, 0.24), transparent 58%),
+			radial-gradient(80% 90% at 100% 0%, rgba(140, 138, 50, 0.2), transparent 55%),
+			linear-gradient(125deg, #fffdfa 0%, #fff4e9 48%, #fff8ef 100%);
+	}
+
+	.dataset-page.theme-editorial .dataset-nav-link.is-active,
+	.dataset-page.theme-editorial .dataset-theme-btn.is-active,
+	.dataset-page.theme-editorial .dataset-download-btn,
+	.dataset-page.theme-editorial .dataset-btn-primary,
+	.dataset-page.theme-editorial .dataset-page-link.is-active {
+		background: linear-gradient(135deg, #9e4b24, #c15d2d 55%, #d7793f 100%);
+	}
+
+	.dataset-page.theme-editorial .dataset-card,
+	.dataset-page.theme-editorial .dataset-store-item,
+	.dataset-page.theme-editorial .dataset-proof-card,
+	.dataset-page.theme-editorial .dataset-metric-card,
+	.dataset-page.theme-editorial .dataset-store-tools,
+	.dataset-page.theme-editorial .dataset-store-upload {
+		background: linear-gradient(168deg, rgba(255, 255, 255, 0.96), rgba(255, 248, 239, 0.96));
+	}
+
+	.dataset-page.theme-editorial .dataset-tag-chip {
+		background: linear-gradient(145deg, #fff2e7, #fff8ef);
+		border-color: rgba(158, 75, 36, 0.24);
+	}
+
+	.dataset-page.theme-editorial .dataset-store-item::before {
+		background: linear-gradient(180deg, #c15d2d, #8c8a32);
+	}
+
+	.dataset-reveal {
+		opacity: 0;
+		transform: translateY(14px);
+		transition: opacity 0.44s ease, transform 0.44s ease;
+	}
+
+	.dataset-reveal.in-view {
+		opacity: 1;
+		transform: translateY(0);
+	}
+
+	@media (max-width: 991.98px) {
+		.dataset-proof-grid,
+		.dataset-hero-grid,
+		.dataset-grid,
+		.dataset-store-grid,
+		.dataset-store-tools-grid,
+		.dataset-format-grid {
+			grid-template-columns: 1fr;
+		}
+
+		.dataset-tool-actions {
+			justify-content: start;
+		}
+	}
+
+	@media (max-width: 575.98px) {
+		.dataset-hero {
+			padding: 1.15rem 1rem;
+		}
+
+		.dataset-theme-switch {
+			width: 100%;
+			justify-content: center;
+		}
+
+		.dataset-proof-card {
+			padding: 0.62rem 0.68rem;
+		}
+
+		.dataset-submit-row .btn,
+		.dataset-submit-row .dataset-btn-secondary {
+			width: 100%;
+			text-align: center;
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.dataset-reveal {
+			transition: none;
+			transform: none;
+		}
+	}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="dataset-page">
+	<div class="dataset-shell">
+	<section class="dataset-hero dataset-reveal" aria-labelledby="dataset-upload-title">
+		<nav class="dataset-nav-strip" aria-label="Dataset flow navigation">
+			<a href="{% url 'dataviz:home' %}" class="dataset-nav-link">Home</a>
+			<a href="{% url 'dataviz:data_analysis' %}" class="dataset-nav-link">Analysis</a>
+			<a href="{% url 'dataviz:datasets' %}" class="dataset-nav-link is-active" aria-current="page">Dataset</a>
+		</nav>
+		<div class="dataset-theme-switch" role="group" aria-label="Dataset page theme switcher">
+			<span class="dataset-theme-label">Theme</span>
+			<a href="#" class="dataset-theme-btn" data-theme-target="dashboard">Dashboard</a>
+			<a href="#" class="dataset-theme-btn" data-theme-target="editorial">Editorial</a>
+		</div>
+		<p class="dataset-theme-note">Quick compare using URL: <strong>?theme=dashboard</strong> or <strong>?theme=editorial</strong>.</p>
+		<div class="dataset-hero-grid">
+			<div>
+				<span class="dataset-badge"><i class="fa-solid fa-database"></i> Dataset Workspace</span>
+				<h1 id="dataset-upload-title" data-ab-key="hero-headline">Turn Raw Files Into Analysis-Ready Datasets</h1>
+				<p data-ab-key="hero-subcopy">
+					Capture title, explanation, and tags in one flow so every dashboard starts with clear context,
+					faster setup, and better team handoff.
+				</p>
+				<div class="dataset-flow-pills" aria-label="dataset workflow stages">
+					<span class="dataset-pill"><i class="fa-solid fa-upload"></i> Upload Securely</span>
+					<span class="dataset-pill"><i class="fa-regular fa-note-sticky"></i> Add Context</span>
+					<span class="dataset-pill"><i class="fa-solid fa-tags"></i> Tag for Discovery</span>
+					<span class="dataset-pill"><i class="fa-solid fa-chart-line"></i> Analyze Faster</span>
+				</div>
+			</div>
+			<div class="dataset-hero-metrics" aria-label="dataset workspace highlights">
+				<div class="dataset-metric-card">
+					<span class="dataset-metric-value">{{ store_total_count }}</span>
+					<span class="dataset-metric-label">Datasets In Store</span>
+				</div>
+				<div class="dataset-metric-card">
+					<span class="dataset-metric-value">{{ max_upload_size_mb }} MB</span>
+					<span class="dataset-metric-label">Max Upload Size</span>
+				</div>
+				<div class="dataset-metric-card">
+					<span class="dataset-metric-value">{% if can_manage_datasets %}Publishing Enabled{% else %}Read-Only Access{% endif %}</span>
+					<span class="dataset-metric-label">Workspace Access</span>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<section class="dataset-proof-grid dataset-reveal" aria-label="dataset quality highlights">
+		<article class="dataset-proof-card">
+			<span class="dataset-proof-kicker"><i class="fa-solid fa-shield-halved"></i> Data Integrity</span>
+			<strong>Secure Upload Validation</strong>
+			<p>Only supported file formats pass through, with server-side validation for safer analysis workflows.</p>
+		</article>
+		<article class="dataset-proof-card">
+			<span class="dataset-proof-kicker"><i class="fa-solid fa-layer-group"></i> Structured Intake</span>
+			<strong>Title + Context + Tags</strong>
+			<p>Every dataset can include rich context and category tags for consistent onboarding and faster team reuse.</p>
+		</article>
+		<article class="dataset-proof-card">
+			<span class="dataset-proof-kicker"><i class="fa-solid fa-bolt"></i> Fast Discovery</span>
+			<strong>Search, Filter, Rank</strong>
+			<p>Use relevance sorting, filters, and metadata to locate the right dataset quickly even as your store grows.</p>
+		</article>
+	</section>
+
+	<div class="dataset-grid">
+		<section class="dataset-card dataset-reveal" aria-labelledby="dataset-form-title">
+			<h2 id="dataset-form-title" class="h4 fw-bold">
+				Dataset Intake
+			</h2>
+
+			{% if success %}
+				<div class="dataset-alert dataset-alert-success" role="status">{{ success }}</div>
+			{% endif %}
+			{% if error %}
+				<div class="dataset-alert dataset-alert-error" role="alert">{{ error }}</div>
+			{% endif %}
+
+			{% if can_manage_datasets %}
+				<form method="post" enctype="multipart/form-data" novalidate>
+					{% csrf_token %}
+
+					<label for="file_upload" class="dataset-label">Dataset File</label>
+					<input id="file_upload" name="file_upload" type="file" class="dataset-input" required>
+					<p class="dataset-help">Max size: {{ max_upload_size_mb }} MB. Formats include CSV, XLS, XLSX, JSON, XML, TXT, Parquet, and SQL.</p>
+
+					<label for="dataset_explanation" class="dataset-label mt-3">Dataset Explanation</label>
+					<textarea
+						id="dataset_explanation"
+						name="dataset_explanation"
+						class="dataset-textarea"
+						maxlength="1200"
+						placeholder="Example: Sales transactions from Jan-Dec 2025, segmented by region, product category, and sales representative. Goal is to find seasonal trends and top-performing segments."
+					>{{ uploaded_file_description }}</textarea>
+					<p class="dataset-help">Include purpose, timeframe, key columns, and success question to guide analysis instantly.</p>
+
+					<div class="dataset-submit-row">
+						<button type="submit" class="btn dataset-btn-primary" data-ab-key="primary-upload-cta">Upload and Save Context</button>
+					</div>
+				</form>
+			{% else %}
+				<div class="dataset-current" role="note">
+					<p>Browse datasets in the shared store below.</p>
+				</div>
+			{% endif %}
+
+			{% if uploaded_file_name %}
+				<div class="dataset-current" aria-label="current uploaded dataset">
+					<b>Current Uploaded File</b>
+					<p>{{ uploaded_file_name }}</p>
+				</div>
+			{% endif %}
+		</section>
+
+		<aside class="dataset-card dataset-reveal" aria-label="dataset upload guidance">
+			<h2 class="h5 fw-bold">How to Write a Good Explanation</h2>
+			<ul class="dataset-side-list">
+				<li><i class="fa-solid fa-check"></i><span>State what the dataset is about and who provided it.</span></li>
+				<li><i class="fa-solid fa-check"></i><span>Include timeframe and units (daily, monthly, currency, etc.).</span></li>
+				<li><i class="fa-solid fa-check"></i><span>Mention key columns like metrics, categories, and dates.</span></li>
+				<li><i class="fa-solid fa-check"></i><span>Describe the main question you want to answer.</span></li>
+			</ul>
+
+			<h3 class="h6 fw-bold mt-3 mb-2">Accepted Formats</h3>
+			<div class="dataset-format-grid" aria-label="supported file formats">
+				<span class="dataset-format-chip">CSV</span>
+				<span class="dataset-format-chip">XLS</span>
+				<span class="dataset-format-chip">XLSX</span>
+				<span class="dataset-format-chip">JSON</span>
+				<span class="dataset-format-chip">XML</span>
+				<span class="dataset-format-chip">TXT</span>
+				<span class="dataset-format-chip">PARQUET</span>
+				<span class="dataset-format-chip">SQL</span>
+			</div>
+		</aside>
+	</div>
+
+	<section class="dataset-card dataset-store-wrap dataset-reveal" aria-labelledby="dataset-store-title">
+		<div class="dataset-store-head">
+			<div>
+				<h2 id="dataset-store-title" class="h4 fw-bold mb-1">Shared Dataset Store</h2>
+				<p>Browse curated datasets, filter in seconds, and download what you need for immediate analysis.</p>
+				<div class="dataset-store-head-meta" aria-label="store capabilities">
+					<span class="dataset-store-chip"><i class="fa-solid fa-magnifying-glass"></i> Smart search</span>
+					<span class="dataset-store-chip"><i class="fa-solid fa-ranking-star"></i> Relevance ranking</span>
+					<span class="dataset-store-chip"><i class="fa-solid fa-shield"></i> Curated uploads</span>
+				</div>
+			</div>
+			<span class="dataset-store-count">{{ store_total_count }} results</span>
+		</div>
+
+		<form method="get" class="dataset-store-tools" aria-label="Dataset store filters">
+			<div class="dataset-store-tools-grid">
+				<div>
+					<label for="store_q" class="dataset-tool-label">Search</label>
+					<input id="store_q" type="text" name="q" value="{{ store_q }}" class="dataset-tool-input" placeholder="Find by title, description, tag, file, or uploader">
+				</div>
+				<div>
+					<label for="store_sort" class="dataset-tool-label">Sort</label>
+					<select id="store_sort" name="sort" class="dataset-tool-select">
+						{% for value, label in store_sort_options %}
+						<option value="{{ value }}" {% if store_sort == value %}selected{% endif %}>{{ label }}</option>
+						{% endfor %}
+					</select>
+				</div>
+				<div>
+					<label for="store_file_type" class="dataset-tool-label">File Type</label>
+					<select id="store_file_type" name="file_type" class="dataset-tool-select">
+						{% for value, label in store_file_type_options %}
+						<option value="{{ value }}" {% if store_file_type == value %}selected{% endif %}>{{ label }}</option>
+						{% endfor %}
+					</select>
+				</div>
+				<div>
+					<label for="store_owner" class="dataset-tool-label">Owner</label>
+					<select id="store_owner" name="owner" class="dataset-tool-select">
+						<option value="all" {% if store_owner == 'all' %}selected{% endif %}>All uploads</option>
+						{% if user.is_authenticated %}
+						<option value="mine" {% if store_owner == 'mine' %}selected{% endif %}>My uploads</option>
+						{% endif %}
+					</select>
+				</div>
+				<div>
+					<label for="store_tag" class="dataset-tool-label">Tag</label>
+					<select id="store_tag" name="tag" class="dataset-tool-select">
+						{% for value, label in store_tag_options %}
+						<option value="{{ value }}" {% if store_tag == value %}selected{% endif %}>{{ label }}</option>
+						{% endfor %}
+					</select>
+				</div>
+				<div class="dataset-tool-actions">
+					<button type="submit" class="btn btn-primary btn-sm">Apply Filters</button>
+					{% if store_has_filters %}
+					<a href="{% url 'dataviz:datasets' %}" class="dataset-tool-reset">Clear</a>
+					{% endif %}
+				</div>
+			</div>
+		</form>
+
+		{% if store_success %}
+			<div class="dataset-alert dataset-alert-success" role="status">{{ store_success }}</div>
+		{% endif %}
+		{% if store_error %}
+			<div class="dataset-alert dataset-alert-error" role="alert">{{ store_error }}</div>
+		{% endif %}
+		{% if post_login_download_dataset %}
+			<div class="dataset-alert dataset-alert-success" role="status">
+				You are logged in. Click below to download your selected dataset:
+				<a href="{% url 'dataviz:dataset_store_download' post_login_download_dataset.id %}" class="dataset-download-btn ms-2"><i class="fa-solid fa-download"></i> Download Data</a>
+			</div>
+		{% endif %}
+
+		<div class="dataset-store-grid">
+			<div class="dataset-store-upload">
+				<h3 class="h6 fw-bold mb-2">
+					Publish Dataset to Store
+				</h3>
+				{% if can_manage_datasets %}
+					<form method="post" enctype="multipart/form-data" novalidate>
+						{% csrf_token %}
+						<input type="hidden" name="store_dataset_submit" value="1">
+
+						<label for="store_title" class="dataset-label">Dataset Title</label>
+						<input id="store_title" name="store_title" type="text" class="dataset-input" maxlength="180" value="{{ store_title }}" required>
+
+						<label for="store_description" class="dataset-label mt-3">Dataset Explanation</label>
+						<textarea id="store_description" name="store_description" class="dataset-textarea" maxlength="2000" placeholder="What this dataset contains and how it should be used." required>{{ store_description }}</textarea>
+
+						<label for="store_tags" class="dataset-label mt-3">Category Tags (comma separated)</label>
+						<input id="store_tags" name="store_tags" type="text" class="dataset-input" maxlength="400" value="{{ store_tags }}" placeholder="finance, sales, healthcare, time-series">
+						<p class="dataset-help">Add up to 12 tags to improve discovery, ranking quality, and reuse by teams.</p>
+
+						<label for="store_file_upload" class="dataset-label mt-3">Dataset File</label>
+						<input id="store_file_upload" name="store_file_upload" type="file" class="dataset-input" required>
+						<p class="dataset-help">Allowed: CSV, XLS, XLSX, JSON, XML, TXT, Parquet, SQL.</p>
+
+						<div class="dataset-submit-row">
+							<button type="submit" class="btn dataset-btn-primary" data-ab-key="store-publish-cta">Publish to Store</button>
+						</div>
+					</form>
+				{% else %}
+					<div class="dataset-alert dataset-alert-error mb-0">
+						Browse datasets from the shared store below.
+					</div>
+				{% endif %}
+			</div>
+
+			<div>
+				{% if store_datasets %}
+					<div class="dataset-store-list">
+						{% for dataset in store_datasets %}
+							<article class="dataset-store-item" aria-labelledby="store-dataset-{{ dataset.id }}">
+								<div>
+									<h3 id="store-dataset-{{ dataset.id }}">{{ dataset.title }}</h3>
+									<p>{{ dataset.description|default:"No description provided."|truncatewords:28 }}</p>
+									<div class="dataset-store-meta">
+										<span><i class="fa-regular fa-file"></i> {{ dataset.download_name }}</span>
+										<span><i class="fa-regular fa-user"></i> {{ dataset.uploaded_by.username|default:"System" }}</span>
+										<span><i class="fa-regular fa-calendar"></i> {{ dataset.created_at|date:"M d, Y" }}</span>
+										<span><i class="fa-solid fa-download"></i> {{ dataset.download_count }}</span>
+									</div>
+									{% if dataset.tags.exists %}
+									<div class="dataset-store-tags" aria-label="dataset tags">
+										{% for tag in dataset.tags.all %}
+										<span class="dataset-tag-chip">{{ tag.name }}</span>
+										{% endfor %}
+									</div>
+									{% endif %}
+								</div>
+								<div class="dataset-store-action">
+									{% if user.is_authenticated %}
+										<a href="{% url 'dataviz:dataset_store_download' dataset.id %}" class="dataset-download-btn"><i class="fa-solid fa-download"></i> Download Data</a>
+									{% else %}
+										{% url 'dataviz:dataset_store_download' dataset.id as dataset_download_url %}
+										<a href="{% url 'login' %}?next={{ dataset_download_url|urlencode }}" class="dataset-download-btn" title="Login with email to download" aria-label="Login with email to download dataset"><i class="fa-solid fa-download"></i> Download Data</a>
+									{% endif %}
+								</div>
+							</article>
+						{% endfor %}
+					</div>
+					{% if store_page_obj.has_other_pages %}
+					<div class="dataset-store-pagination" aria-label="Dataset store pagination">
+						{% if store_page_obj.has_previous %}
+						<a class="dataset-page-link" href="{% url 'dataviz:datasets' %}?{% if store_query_string %}{{ store_query_string }}&{% endif %}page={{ store_page_obj.previous_page_number }}">Prev</a>
+						{% endif %}
+
+						{% for page_number in store_page_obj.paginator.page_range %}
+							{% if page_number == store_page_obj.number %}
+								<span class="dataset-page-link is-active">{{ page_number }}</span>
+							{% elif page_number >= store_page_obj.number|add:'-2' and page_number <= store_page_obj.number|add:'2' %}
+								<a class="dataset-page-link" href="{% url 'dataviz:datasets' %}?{% if store_query_string %}{{ store_query_string }}&{% endif %}page={{ page_number }}">{{ page_number }}</a>
+							{% endif %}
+						{% endfor %}
+
+						{% if store_page_obj.has_next %}
+						<a class="dataset-page-link" href="{% url 'dataviz:datasets' %}?{% if store_query_string %}{{ store_query_string }}&{% endif %}page={{ store_page_obj.next_page_number }}">Next</a>
+						{% endif %}
+					</div>
+					{% endif %}
+				{% else %}
+					<div class="dataset-current">
+						{% if store_has_filters %}
+						<b>No datasets match your current filters</b>
+						<p>Try broader terms or clear filters to discover more options.</p>
+						{% else %}
+						<b>No datasets published yet</b>
+						<p>Your shared store is ready for its first reusable dataset.</p>
+						{% endif %}
+					</div>
+				{% endif %}
+			</div>
+		</div>
+	</section>
+	</div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+	(function () {
+		const supportedThemes = ['dashboard', 'editorial'];
+		const themeQuery = (new URLSearchParams(window.location.search).get('theme') || '').toLowerCase();
+		let activeTheme = supportedThemes.includes(themeQuery)
+			? themeQuery
+			: (localStorage.getItem('datasetVisualTheme') || 'editorial');
+
+		if (!supportedThemes.includes(activeTheme)) {
+			activeTheme = 'editorial';
+		}
+
+		const pageRoot = document.querySelector('.dataset-page');
+		if (pageRoot) {
+			pageRoot.classList.remove('theme-dashboard', 'theme-editorial');
+			pageRoot.classList.add('theme-' + activeTheme);
+		}
+
+		document.querySelectorAll('[data-theme-target]').forEach(function(link) {
+			const target = link.getAttribute('data-theme-target');
+			if (!supportedThemes.includes(target)) {
+				return;
+			}
+
+			const targetUrl = new URL(window.location.href);
+			targetUrl.searchParams.set('theme', target);
+			link.setAttribute('href', targetUrl.toString());
+			link.classList.toggle('is-active', target === activeTheme);
+
+			link.addEventListener('click', function() {
+				try {
+					localStorage.setItem('datasetVisualTheme', target);
+				} catch (error) {
+					// Continue without persistence if storage is unavailable.
+				}
+			});
+		});
+
+		try {
+			localStorage.setItem('datasetVisualTheme', activeTheme);
+		} catch (error) {
+			// Continue without persistence if storage is unavailable.
+		}
+
+		if (window.gtag) {
+			window.gtag('event', 'dataset_theme_view', {
+				page_location: window.location.pathname,
+				theme: activeTheme
+			});
+		}
+
+		const copyVariants = {
+			a: {
+				"hero-headline": "Turn Raw Files Into Analysis-Ready Datasets",
+				"hero-subcopy": "Capture title, explanation, and tags in one flow so every dashboard starts with clear context, faster setup, and better team handoff.",
+				"primary-upload-cta": "Upload and Save Context",
+				"store-publish-cta": "Publish to Store"
+			},
+			b: {
+				"hero-headline": "Launch Better Insights With Clean Dataset Intake",
+				"hero-subcopy": "Standardize title, explanation, and tags before analysis so your team can move faster with fewer mistakes and better reuse.",
+				"primary-upload-cta": "Start Smart Upload",
+				"store-publish-cta": "Publish Dataset Now"
+			}
+		};
+
+		const urlParams = new URLSearchParams(window.location.search);
+		const requestedVariant = (urlParams.get('ab') || '').toLowerCase();
+		let activeVariant = requestedVariant === 'a' || requestedVariant === 'b' ? requestedVariant : null;
+
+		if (!activeVariant) {
+			activeVariant = localStorage.getItem('datasetCopyAbVariant');
+		}
+
+		if (activeVariant !== 'a' && activeVariant !== 'b') {
+			activeVariant = Math.random() < 0.5 ? 'a' : 'b';
+		}
+
+		try {
+			localStorage.setItem('datasetCopyAbVariant', activeVariant);
+		} catch (error) {
+			// Continue without persistence if storage is unavailable.
+		}
+
+		document.querySelectorAll('[data-ab-key]').forEach(function(node) {
+			const key = node.getAttribute('data-ab-key');
+			const variantText = copyVariants[activeVariant] && copyVariants[activeVariant][key];
+			if (variantText) {
+				node.textContent = variantText;
+			}
+		});
+
+		if (window.gtag) {
+			window.gtag('event', 'dataset_copy_variant_view', {
+				page_location: window.location.pathname,
+				variant: activeVariant
+			});
+		}
+
+		const revealItems = document.querySelectorAll('.dataset-reveal');
+		if (!revealItems.length) return;
+
+		const observer = new IntersectionObserver(
+			function(entries, revealObserver) {
+				entries.forEach(function(entry) {
+					if (entry.isIntersecting) {
+						entry.target.classList.add('in-view');
+						revealObserver.unobserve(entry.target);
+					}
+				});
+			},
+			{ threshold: 0.16 }
+		);
+
+		revealItems.forEach(function(item) { observer.observe(item); });
+	})();
+</script>
+{% endblock %}

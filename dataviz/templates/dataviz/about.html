@@ -1,12 +1,658 @@
-{% extends 'dataviz/base.html' %}
+{% extends "dataviz/base.html" %}
+{% load static %}
+
+{% block title %}About Abid Hussain | DataViz Pro{% endblock %}
+{% block og_title %}About Abid Hussain | DataViz Pro{% endblock %}
+{% block twitter_title %}About Abid Hussain | DataViz Pro{% endblock %}
+{% block og_description %}Python Developer, Data Scientist, and AI Specialist building intelligent data-driven solutions with Django, analytics, and modern AI workflows.{% endblock %}
+{% block twitter_description %}Learn about Abid Hussain, his skills, services, and mission behind DataViz Pro and practical analytics solutions.{% endblock %}
 
 {% block meta %}
-<meta name="robots" content="noindex, follow">
-{% endblock %} 
+<meta name="description" content="About Abid Hussain, Python Developer, Data Scientist, and AI Specialist. Explore his work in Django development, analytics, data visualization, and AI workflows.">
+<meta name="keywords" content="Abid Hussain, Python Developer, Data Scientist, AI Specialist, Django, Data Visualization, DataViz Pro">
+<meta name="author" content="Abid Hussain">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="{{ request.scheme }}://{{ request.get_host }}{{ request.path }}">
+{% endblock %}
 
-{% block title %}About Us{% endblock %}
+{% block extra_head %}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700;800&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<script type="application/ld+json">
+{
+	"@context": "https://schema.org",
+	"@type": "Person",
+	"name": "Abid Hussain",
+	"jobTitle": "Python Developer | Data Scientist | AI Specialist",
+	"url": "https://portfolio.abidnexus.com",
+	"email": "mailto:abidhussainnoul512@gmail.com",
+	"address": {
+		"@type": "PostalAddress",
+		"addressLocality": "Lahore",
+		"addressRegion": "Punjab",
+		"addressCountry": "Pakistan"
+	},
+	"sameAs": [
+		"https://github.com/abid4850",
+		"https://portfolio.abidnexus.com"
+	]
+}
+</script>
+
+<style>
+	.about-pro {
+		--ink-900: #0b1f3e;
+		--ink-700: #24486f;
+		--ink-500: #4b6789;
+		--sky-500: #168ef0;
+		--mint-500: #07b99d;
+		--amber-500: #ffbe45;
+		--line-soft: rgba(11, 31, 62, 0.14);
+		--shadow-soft: 0 14px 34px rgba(11, 31, 62, 0.1);
+		--shadow-strong: 0 24px 48px rgba(11, 31, 62, 0.16);
+		color: var(--ink-900);
+		font-family: 'Manrope', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+	}
+
+	.about-pro h1,
+	.about-pro h2,
+	.about-pro h3,
+	.about-pro h4,
+	.about-pro h5 {
+		font-family: 'Sora', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+		letter-spacing: -0.02em;
+	}
+
+	.about-hero {
+		position: relative;
+		overflow: hidden;
+		border-radius: 1.2rem;
+		background:
+			radial-gradient(115% 120% at 0% 0%, rgba(22, 142, 240, 0.22), transparent 54%),
+			radial-gradient(80% 90% at 100% 0%, rgba(255, 190, 69, 0.2), transparent 48%),
+			linear-gradient(128deg, #fbfdff 0%, #f1f8ff 45%, #f4fffb 100%);
+		border: 1px solid var(--line-soft);
+		box-shadow: var(--shadow-strong);
+		padding: 1.4rem;
+		margin-bottom: 1.15rem;
+	}
+
+	.about-hero-grid {
+		display: grid;
+		grid-template-columns: minmax(0, 1.35fr) minmax(0, 0.85fr);
+		gap: 1rem;
+		align-items: stretch;
+	}
+
+	.about-profile-panel {
+		display: flex;
+		flex-direction: column;
+		border-radius: 1rem;
+		border: 1px solid var(--line-soft);
+		background: rgba(255, 255, 255, 0.84);
+		box-shadow: var(--shadow-soft);
+		overflow: hidden;
+		min-height: 100%;
+	}
+
+	.about-profile-photo {
+		background: linear-gradient(145deg, #e7f2ff, #effff9);
+		border-bottom: 1px solid var(--line-soft);
+	}
+
+	.about-profile-photo img {
+		display: block;
+		width: 100%;
+		height: 100%;
+		max-height: 320px;
+		object-fit: cover;
+	}
+
+	.about-profile-body {
+		padding: 0.9rem;
+	}
+
+	.about-profile-name {
+		font-family: 'Sora', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+		font-size: 1.08rem;
+		font-weight: 700;
+		margin-bottom: 0.1rem;
+	}
+
+	.about-profile-tagline {
+		color: var(--ink-500);
+		font-size: 0.86rem;
+		margin-bottom: 0.7rem;
+	}
+
+	.about-profile-chip-row {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.42rem;
+		margin-bottom: 0.75rem;
+	}
+
+	.about-profile-chip {
+		border-radius: 999px;
+		border: 1px solid var(--line-soft);
+		background: #fff;
+		padding: 0.28rem 0.62rem;
+		font-size: 0.76rem;
+		font-weight: 700;
+		color: var(--ink-700);
+		text-transform: uppercase;
+		letter-spacing: 0.04em;
+	}
+
+	.about-profile-links {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.45rem;
+		margin-top: 0.75rem;
+	}
+
+	.about-profile-links a {
+		text-decoration: none;
+		border-radius: 999px;
+		padding: 0.32rem 0.62rem;
+		font-size: 0.8rem;
+		font-weight: 700;
+		color: #0b78d4;
+		background: #eef6ff;
+		border: 1px solid rgba(11, 120, 212, 0.2);
+	}
+
+	.about-profile-links a:hover {
+		background: #e3f0ff;
+	}
+
+	.about-social-row {
+		display: flex;
+		align-items: center;
+		gap: 0.45rem;
+		margin-top: 0.75rem;
+	}
+
+	.about-social-link {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		width: 2.05rem;
+		height: 2.05rem;
+		border-radius: 999px;
+		text-decoration: none;
+		border: 1px solid rgba(11, 120, 212, 0.2);
+		background: #eef6ff;
+		color: #0b78d4;
+		font-size: 0.95rem;
+		transition: transform 0.2s ease, background 0.2s ease;
+	}
+
+	.about-social-link:hover {
+		background: #e3f0ff;
+		color: #085a9f;
+		transform: translateY(-1px);
+	}
+
+	.about-social-hf {
+		font-size: 0.66rem;
+		font-weight: 800;
+		letter-spacing: 0.04em;
+	}
+
+	.about-badge {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.4rem;
+		border-radius: 999px;
+		border: 1px solid var(--line-soft);
+		background: rgba(255, 255, 255, 0.76);
+		padding: 0.35rem 0.72rem;
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+		font-size: 0.77rem;
+		font-weight: 700;
+		margin-bottom: 0.95rem;
+	}
+
+	.about-hero h1 {
+		font-size: clamp(1.55rem, 2.8vw, 2.55rem);
+		line-height: 1.12;
+		margin-bottom: 0.7rem;
+	}
+
+	.about-role {
+		color: var(--ink-700);
+		font-weight: 600;
+		margin-bottom: 0.9rem;
+	}
+
+	.about-summary {
+		color: var(--ink-500);
+		max-width: 72ch;
+		line-height: 1.75;
+		margin-bottom: 1rem;
+	}
+
+	.about-meta-grid {
+		display: grid;
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+		gap: 0.7rem;
+		margin-bottom: 1rem;
+	}
+
+	.about-meta-card {
+		border-radius: 0.82rem;
+		border: 1px solid var(--line-soft);
+		background: rgba(255, 255, 255, 0.84);
+		padding: 0.68rem;
+	}
+
+	.about-meta-card b {
+		display: block;
+		font-size: 0.86rem;
+		margin-bottom: 0.18rem;
+	}
+
+	.about-meta-card span {
+		color: var(--ink-500);
+		font-size: 0.84rem;
+	}
+
+	.about-cta-row {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.65rem;
+	}
+
+	.about-btn-primary {
+		background: linear-gradient(135deg, #0b78d4, #168ef0);
+		color: #fff;
+		border: 0;
+		border-radius: 0.78rem;
+		padding: 0.68rem 1.08rem;
+		font-weight: 700;
+		box-shadow: 0 11px 24px rgba(11, 120, 212, 0.28);
+	}
+
+	.about-btn-primary:hover,
+	.about-btn-primary:focus-visible {
+		color: #fff;
+	}
+
+	.about-btn-secondary {
+		border-radius: 0.78rem;
+		padding: 0.68rem 1.08rem;
+		font-weight: 700;
+		border-color: rgba(11, 31, 62, 0.24);
+		color: var(--ink-900);
+		background: rgba(255, 255, 255, 0.75);
+	}
+
+	.about-section {
+		margin-bottom: 1.15rem;
+		border-radius: 1rem;
+		border: 1px solid var(--line-soft);
+		background: #fff;
+		box-shadow: var(--shadow-soft);
+		padding: 1rem;
+	}
+
+	.about-section h2 {
+		margin-bottom: 0.75rem;
+	}
+
+	.about-section p {
+		color: var(--ink-500);
+		line-height: 1.72;
+	}
+
+	.about-skill-grid,
+	.about-service-grid,
+	.about-project-grid {
+		display: grid;
+		gap: 0.75rem;
+	}
+
+	.about-skill-grid {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+
+	.about-service-grid,
+	.about-project-grid {
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+	}
+
+	.about-skill-card,
+	.about-service-card,
+	.about-project-card {
+		border-radius: 0.9rem;
+		border: 1px solid var(--line-soft);
+		background: linear-gradient(145deg, #ffffff, #f5faff);
+		padding: 0.86rem;
+		min-height: 100%;
+	}
+
+	.about-skill-card h3,
+	.about-service-card h3,
+	.about-project-card h3 {
+		font-size: 1rem;
+		margin-bottom: 0.4rem;
+	}
+
+	.about-skill-card p,
+	.about-service-card p,
+	.about-project-card p {
+		margin-bottom: 0;
+		font-size: 0.9rem;
+	}
+
+	.about-list {
+		list-style: none;
+		margin: 0.4rem 0 0;
+		padding: 0;
+		display: grid;
+		gap: 0.3rem;
+		color: var(--ink-700);
+		font-size: 0.88rem;
+	}
+
+	.about-list li {
+		display: flex;
+		align-items: flex-start;
+		gap: 0.36rem;
+	}
+
+	.about-list i {
+		color: var(--mint-500);
+		margin-top: 0.14rem;
+	}
+
+	.about-contact-strip {
+		border-radius: 1rem;
+		border: 1px solid var(--line-soft);
+		background: linear-gradient(130deg, #0a2347, #12427c 58%, #0c807f);
+		color: #eef8ff;
+		box-shadow: 0 20px 38px rgba(11, 31, 62, 0.28);
+		padding: 1.05rem;
+	}
+
+	.about-contact-strip h2 {
+		color: #fff;
+		margin-bottom: 0.38rem;
+	}
+
+	.about-contact-strip p {
+		color: rgba(238, 248, 255, 0.9);
+		margin-bottom: 0.85rem;
+		max-width: 62ch;
+	}
+
+	.about-contact-links {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.55rem;
+	}
+
+	.about-contact-links a {
+		text-decoration: none;
+		border-radius: 999px;
+		padding: 0.4rem 0.78rem;
+		background: rgba(255, 255, 255, 0.14);
+		border: 1px solid rgba(255, 255, 255, 0.3);
+		color: #fff;
+		font-size: 0.85rem;
+		font-weight: 600;
+	}
+
+	.about-contact-links a:hover {
+		background: rgba(255, 255, 255, 0.22);
+	}
+
+	.about-reveal {
+		opacity: 0;
+		transform: translateY(14px);
+		transition: opacity 0.45s ease, transform 0.45s ease;
+	}
+
+	.about-reveal.in-view {
+		opacity: 1;
+		transform: translateY(0);
+	}
+
+	@media (max-width: 991.98px) {
+		.about-hero-grid {
+			grid-template-columns: 1fr;
+		}
+
+		.about-meta-grid,
+		.about-skill-grid,
+		.about-service-grid,
+		.about-project-grid {
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+		}
+	}
+
+	@media (max-width: 575.98px) {
+		.about-meta-grid,
+		.about-skill-grid,
+		.about-service-grid,
+		.about-project-grid {
+			grid-template-columns: 1fr;
+		}
+
+		.about-cta-row .btn {
+			width: 100%;
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.about-reveal {
+			transition: none;
+			transform: none;
+		}
+
+		.about-social-link {
+			transition: none;
+			transform: none;
+		}
+	}
+</style>
+{% endblock %}
 
 {% block content %}
-<h1>About Our Data Visualization Project</h1>
-<p>Welcome to our DataViz project. Here you can explore dashboards, datasets, and Python visualizations.</p>
+<div class="about-pro">
+	<section class="about-hero about-reveal" aria-labelledby="about-main-title">
+		<div class="about-hero-grid">
+			<div>
+				<span class="about-badge"><i class="fa-solid fa-user-tie"></i> About The Creator</span>
+				<h1 id="about-main-title">Abid Hussain</h1>
+				<p class="about-role">Python Developer | Data Scientist | AI Specialist</p>
+
+				<p class="about-summary">
+					I build intelligent, data-driven solutions using Python, Django web development, and modern AI workflows.
+					My focus includes analytics engineering, data visualization, Generative AI systems, and automation that helps
+					teams make faster and better decisions.
+				</p>
+
+				<div class="about-meta-grid" aria-label="professional details">
+					<div class="about-meta-card">
+						<b>Location</b>
+						<span>Lahore, Punjab, Pakistan</span>
+					</div>
+					<div class="about-meta-card">
+						<b>Status</b>
+						<span>Available for Projects</span>
+					</div>
+					<div class="about-meta-card">
+						<b>Primary Stack</b>
+						<span>Python, Django, Analytics, AI</span>
+					</div>
+				</div>
+
+				<div class="about-cta-row">
+					<a href="https://portfolio.abidnexus.com" target="_blank" rel="noopener noreferrer" class="btn about-btn-primary">Visit Full Portfolio</a>
+					<a href="{% url 'dataviz:data_analysis' %}" class="btn about-btn-secondary">Try DataViz Pro</a>
+				</div>
+			</div>
+
+			<aside class="about-profile-panel" aria-label="Profile media panel">
+				<div class="about-profile-photo">
+					<img src="{% static 'images/abid-hussain-profile.jpg' %}" alt="Abid Hussain profile photo" loading="lazy">
+				</div>
+				<div class="about-profile-body">
+					<p class="about-profile-name">Abid Hussain</p>
+					<p class="about-profile-tagline">Building practical AI + analytics products for real-world impact.</p>
+					<div class="about-profile-chip-row">
+						<span class="about-profile-chip">Django</span>
+						<span class="about-profile-chip">Data Science</span>
+						<span class="about-profile-chip">Generative AI</span>
+					</div>
+					<ul class="about-list">
+						<li><i class="fa-solid fa-check"></i><span>Advanced ML/DL/AI + Django training</span></li>
+						<li><i class="fa-solid fa-check"></i><span>Master in Economics foundation</span></li>
+						<li><i class="fa-solid fa-check"></i><span>Available for freelance and product builds</span></li>
+					</ul>
+					<div class="about-profile-links">
+						<a href="https://portfolio.abidnexus.com/projects/" target="_blank" rel="noopener noreferrer">Projects</a>
+						<a href="https://portfolio.abidnexus.com/services/" target="_blank" rel="noopener noreferrer">Services</a>
+					</div>
+					<div class="about-social-row" aria-label="Social profiles">
+						<a href="https://github.com/abid4850" target="_blank" rel="noopener noreferrer" class="about-social-link" aria-label="GitHub profile">
+							<i class="fa-brands fa-github" aria-hidden="true"></i>
+						</a>
+						<a href="https://www.linkedin.com/in/yourusername/" target="_blank" rel="noopener noreferrer" class="about-social-link" aria-label="LinkedIn profile">
+							<i class="fa-brands fa-linkedin-in" aria-hidden="true"></i>
+						</a>
+						<a href="https://huggingface.co/yourusername" target="_blank" rel="noopener noreferrer" class="about-social-link" aria-label="Hugging Face profile">
+							<span class="about-social-hf" aria-hidden="true">HF</span>
+						</a>
+					</div>
+				</div>
+			</aside>
+		</div>
+	</section>
+
+	<section class="about-section about-reveal" aria-labelledby="about-mission-title">
+		<h2 id="about-mission-title" class="h4 fw-bold">Mission</h2>
+		<p>
+			My mission is to combine software engineering and AI to create practical products that solve real-world problems.
+			I work across web apps, data science workflows, and intelligent automation to turn complex data into useful,
+			actionable outcomes.
+		</p>
+	</section>
+
+	<section class="about-section about-reveal" aria-labelledby="about-skills-title">
+		<h2 id="about-skills-title" class="h4 fw-bold">Core Skills & Expertise</h2>
+		<div class="about-skill-grid">
+			<article class="about-skill-card">
+				<h3>Engineering & Development</h3>
+				<p>Python-first engineering with strong Django development for scalable web applications.</p>
+				<ul class="about-list">
+					<li><i class="fa-solid fa-check"></i><span>Python, Django, API integration</span></li>
+					<li><i class="fa-solid fa-check"></i><span>Automation workflows and scraping</span></li>
+				</ul>
+			</article>
+			<article class="about-skill-card">
+				<h3>Data Science & Visualization</h3>
+				<p>Hands-on analytics and visual storytelling for business and technical audiences.</p>
+				<ul class="about-list">
+					<li><i class="fa-solid fa-check"></i><span>Pandas, NumPy, Plotly, Tableau, Power BI</span></li>
+					<li><i class="fa-solid fa-check"></i><span>KPI-focused dashboard design</span></li>
+				</ul>
+			</article>
+			<article class="about-skill-card">
+				<h3>AI & Generative Systems</h3>
+				<p>Designing and deploying modern AI workflows for useful enterprise outcomes.</p>
+				<ul class="about-list">
+					<li><i class="fa-solid fa-check"></i><span>LLMs, LoRA/QLoRA, NLP, prompt engineering</span></li>
+					<li><i class="fa-solid fa-check"></i><span>RAG/CAG and AI agent solutions</span></li>
+				</ul>
+			</article>
+			<article class="about-skill-card">
+				<h3>Cloud & Delivery</h3>
+				<p>Building deployable products with cloud-ready architecture and database-backed reliability.</p>
+				<ul class="about-list">
+					<li><i class="fa-solid fa-check"></i><span>AWS, MySQL, production deployment</span></li>
+					<li><i class="fa-solid fa-check"></i><span>End-to-end solution delivery</span></li>
+				</ul>
+			</article>
+		</div>
+	</section>
+
+	<section class="about-section about-reveal" aria-labelledby="about-services-title">
+		<h2 id="about-services-title" class="h4 fw-bold">Professional Services</h2>
+		<div class="about-service-grid">
+			<article class="about-service-card">
+				<h3>Web Development</h3>
+				<p>Professional Django web applications designed for performance, usability, and scale.</p>
+			</article>
+			<article class="about-service-card">
+				<h3>Data Science & Analytics</h3>
+				<p>Data analysis, visualization, and modeling solutions for evidence-based decision making.</p>
+			</article>
+			<article class="about-service-card">
+				<h3>AI & Machine Learning</h3>
+				<p>Custom AI implementations across NLP, intelligent assistants, and predictive workflows.</p>
+			</article>
+		</div>
+	</section>
+
+	<section class="about-section about-reveal" aria-labelledby="about-projects-title">
+		<h2 id="about-projects-title" class="h4 fw-bold">Selected Project Highlights</h2>
+		<div class="about-project-grid">
+			<article class="about-project-card">
+				<h3>Hugging Face Model Hub Integration</h3>
+				<p>Fine-tuned transformers, custom datasets, inference wrappers, and evaluation-focused AI delivery.</p>
+			</article>
+			<article class="about-project-card">
+				<h3>RAG Question-Answering App</h3>
+				<p>LLM-powered semantic retrieval over documents using FAISS embeddings and document pipelines.</p>
+			</article>
+			<article class="about-project-card">
+				<h3>Interactive Data Visualization Dashboard</h3>
+				<p>KPI dashboards with drill-down analysis, real-time data handling, and exportable reporting flows.</p>
+			</article>
+		</div>
+	</section>
+
+	<section class="about-contact-strip about-reveal" aria-labelledby="about-contact-title">
+		<h2 id="about-contact-title" class="h4 fw-bold">Ready to Build Your Next Project?</h2>
+		<p>
+			If you are looking for a developer who can blend software engineering, analytics, and AI into one execution path,
+			let us connect and discuss your project goals.
+		</p>
+		<div class="about-contact-links">
+			<a href="mailto:abidhussainnoul512@gmail.com">Email</a>
+			<a href="https://github.com/abid4850" target="_blank" rel="noopener noreferrer">GitHub</a>
+			<a href="https://portfolio.abidnexus.com/contact/" target="_blank" rel="noopener noreferrer">Contact Form</a>
+			<a href="{% url 'dataviz:blog' %}">Read Blog</a>
+		</div>
+	</section>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+	(function () {
+		const revealItems = document.querySelectorAll('.about-reveal');
+		if (!revealItems.length) return;
+
+		const observer = new IntersectionObserver(
+			function(entries, revealObserver) {
+				entries.forEach(function(entry) {
+					if (entry.isIntersecting) {
+						entry.target.classList.add('in-view');
+						revealObserver.unobserve(entry.target);
+					}
+				});
+			},
+			{ threshold: 0.16 }
+		);
+
+		revealItems.forEach(function(item) { observer.observe(item); });
+	})();
+</script>
 {% endblock %}
